@@ -11,7 +11,7 @@ export default defineConfig({
       entry: resolve(__dirname, "src/main.ts"),
       name: "ActiveUsersWidget",
       // the proper extensions will be added
-      fileName: "active-users-widget",
+      fileName: "widget",
       formats: ["es"],
     },
     cssCodeSplit: true,
