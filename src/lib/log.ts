@@ -1,3 +1,3 @@
-const log = (message: string) => {
+export const log = (message: string) => {
   console.log(`[active-users-widget] ${message}`)
 }
