@@ -1,36 +1,57 @@
+import "./style.scss"
+
 import { api } from "./lib/api"
+import { WIDGET_CLASS } from "./lib/constants"
 import { template } from "./lib/html"
-import "./style.css"
+import { log } from "./lib/log"
 
 async function init() {
   let PROJECT_ID: string = "TEST-PROJECT-ID"
   let AUTOCAPTURE: string | boolean = true
+  // @xxx maybe not the best wording
+  let HEADLESS: string | boolean = false
+
   if (document.currentScript) {
     AUTOCAPTURE = document.currentScript.getAttribute("data-active-users-autocapture") || AUTOCAPTURE
     PROJECT_ID = document.currentScript.getAttribute("data-active-users-project-id") || PROJECT_ID
+    HEADLESS = document.currentScript.getAttribute("data-active-users-headless") || HEADLESS
   }
 
-  try {
-    const stats = await api.getStatistics(PROJECT_ID)
-    if (stats.keys.length !== 0) {
-      document.querySelector<HTMLDivElement>(".active-users-widget")!.innerHTML = template({
-        count: stats.keys.length,
-        avatars: [
-          "https://i.pravatar.cc/20?1",
-          "https://i.pravatar.cc/20?2",
-          "https://i.pravatar.cc/20?3",
-          "https://i.pravatar.cc/20?4",
-          "https://i.pravatar.cc/20?5",
-        ],
-      })
+  console.log("optiosn", { PROJECT_ID, AUTOCAPTURE, HEADLESS })
+
+  const existingWidgetElement = document.querySelector<HTMLDivElement>(`.${WIDGET_CLASS}`)
+
+  if (!HEADLESS) {
+    if (!existingWidgetElement) {
+      const attachedUI = document.createElement("DIV")
+      attachedUI.classList.add(WIDGET_CLASS)
+
+      document.body.appendChild(attachedUI)
     }
-  } catch (error) {}
+    try {
+      const widgetElement = document.querySelector<HTMLDivElement>(`.${WIDGET_CLASS}`)
 
-  try {
-    const capture = AUTOCAPTURE && (await api.captureActivity(PROJECT_ID))
-  } catch (error) {
-    log("Issue while capturing user presence")
+      const stats = await api.getStatistics(PROJECT_ID)
+      if (stats.keys.length !== 0 && widgetElement) {
+        widgetElement.innerHTML = template({
+          count: stats.keys.length,
+          avatars: [
+            "https://i.pravatar.cc/20?1",
+            "https://i.pravatar.cc/20?2",
+            "https://i.pravatar.cc/20?3",
+            "https://i.pravatar.cc/20?4",
+            "https://i.pravatar.cc/20?5",
+          ],
+        })
+      }
+    } catch (error) {}
   }
+  if (AUTOCAPTURE)
+    try {
+      await api.captureActivity(PROJECT_ID)
+    } catch (error) {
+      log("Issue while capturing user presence")
+    }
 }
 
 init()
