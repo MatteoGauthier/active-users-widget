@@ -33,7 +33,7 @@
     "np": "^7.6.3",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
-    "vite-plugin-lib-inject-style": "^0.1.2"
+    "vite-plugin-css-injected-by-js": "^3.0.1"
   },
   "dependencies": {
     "sass": "^1.58.3"
