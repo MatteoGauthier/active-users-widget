@@ -1,7 +1,7 @@
 // vite.config.js
 import { resolve } from "path"
 import { defineConfig } from "vite"
-import VitePluginLibInjectStyle from "vite-plugin-lib-inject-style"
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js"
 
 /** @type {import('vite').UserConfig} */
 export default defineConfig({
@@ -12,12 +12,9 @@ export default defineConfig({
       name: "ActiveUsersWidget",
       // the proper extensions will be added
       fileName: "active-users-widget",
+      formats: ["es"],
     },
     cssCodeSplit: true,
   },
-  plugins: [
-    VitePluginLibInjectStyle({
-      // options ..
-    }),
-  ],
+  plugins: [cssInjectedByJsPlugin()],
 })
