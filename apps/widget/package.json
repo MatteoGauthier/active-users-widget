@@ -1,0 +1,38 @@
+{
+  "name": "active-users-widget",
+  "version": "0.0.6",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "lint": "eslint --ext .js,.ts,.tsx . && tsc",
+    "build": "npm run lint && vite build",
+    "release": "npm run build && np --no-tests"
+  },
+  "keywords": [
+    "statistics",
+    "analytics",
+    "active-users",
+    "users",
+    "widget"
+  ],
+  "author": {
+    "name": "Mattèo Gauthier",
+    "email": "matteo.gauthier@gmail.com",
+    "url": "https://matteogauthier.fr"
+  },
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/widget.js",
+  "devDependencies": {
+    "np": "7.6.3",
+    "typescript": "^4.9.3",
+    "vite": "^4.1.0",
+    "vite-plugin-css-injected-by-js": "^3.0.1",
+    "eslint-config-custom": "*",
+    "tsconfig": "*"
+  },
+  "dependencies": {
+    "sass": "^1.58.3"
+  }
+}

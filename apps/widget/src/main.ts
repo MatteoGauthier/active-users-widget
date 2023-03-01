@@ -6,7 +6,7 @@ import { template } from "./lib/html"
 import { log } from "./lib/log"
 
 async function init() {
-  let PROJECT_ID: string = "TEST-PROJECT-ID"
+  let PROJECT_ID = "TEST-PROJECT-ID"
   let AUTOCAPTURE: string | boolean = true
   // @xxx maybe not the best wording
   let HEADLESS: string | boolean = false
@@ -44,13 +44,16 @@ async function init() {
           ],
         })
       }
-    } catch (error) {}
+    } catch (error) {
+      // @todo handle error
+    }
   }
   if (AUTOCAPTURE)
     try {
       await api.captureActivity(PROJECT_ID)
     } catch (error) {
       log("Issue while capturing user presence")
+      // @todo handle error
     }
 }
 

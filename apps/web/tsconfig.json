@@ -1,0 +1,12 @@
+{
+  "extends": "tsconfig/web.json",
+  "include": [
+    "src",
+    "types/next-env.d.ts",
+    "**/*.ts",
+    "**/*.d.ts",
+    "**/*.tsx",
+    "**/*.cjs",
+    "**/*.mjs"
+  ]
+}
