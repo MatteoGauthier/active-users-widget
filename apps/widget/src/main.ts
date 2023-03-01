@@ -17,8 +17,6 @@ async function init() {
     HEADLESS = document.currentScript.getAttribute("data-active-users-headless") || HEADLESS
   }
 
-  console.log("optiosn", { PROJECT_ID, AUTOCAPTURE, HEADLESS })
-
   const existingWidgetElement = document.querySelector<HTMLDivElement>(`.${WIDGET_CLASS}`)
 
   if (!HEADLESS) {
