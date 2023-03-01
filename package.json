@@ -16,9 +16,5 @@
     "prettier": "^2.7.1",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@7.25.1",
-  "dependencies": {
-    "eslint-config-custom": "link:packages/eslint-config-custom",
-    "tsconfig": "link:packages/tsconfig"
-  }
+  "packageManager": "pnpm@7.25.1"
 }
