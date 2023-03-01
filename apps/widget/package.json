@@ -2,6 +2,7 @@
   "name": "active-users-widget",
   "version": "0.0.6",
   "type": "module",
+  "private": false,
   "scripts": {
     "dev": "vite",
     "lint": "eslint --ext .js,.ts,.tsx . && tsc",
