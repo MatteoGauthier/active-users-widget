@@ -33,6 +33,7 @@ async function init() {
       if (stats.keys.length !== 0 && widgetElement) {
         widgetElement.innerHTML = template({
           count: stats.keys.length,
+          // @todo use real avatars
           avatars: [
             "https://i.pravatar.cc/20?1",
             "https://i.pravatar.cc/20?2",
