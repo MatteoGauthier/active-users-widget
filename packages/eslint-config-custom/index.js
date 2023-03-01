@@ -1,3 +1,4 @@
+/** @type {import("eslint").Linter.Config} */
 module.exports = {
   env: {
     node: true,
@@ -12,4 +13,5 @@ module.exports = {
   rules: {
     "@typescript-eslint/no-non-null-assertion": "off",
   },
+  ignorePatterns: ["node_modules", "dist", "build"],
 }

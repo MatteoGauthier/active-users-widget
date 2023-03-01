@@ -4,9 +4,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "release": "npm run build && np --no-tests",
-    "lint": "eslint --ext .js,.ts,.tsx ."
+    "lint": "eslint --ext .js,.ts,.tsx . && tsc",
+    "build": "npm run lint && vite build",
+    "release": "npm run build && np --no-tests"
   },
   "keywords": [
     "statistics",
