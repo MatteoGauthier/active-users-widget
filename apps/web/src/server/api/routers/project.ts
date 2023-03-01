@@ -18,4 +18,25 @@ export const projectRouter = createTRPCRouter({
   getSecretMessage: protectedProcedure.query(() => {
     return "you can now see this secret message!";
   }),
+
+  create: protectedProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const project = await ctx.prisma.project.create({
+        data: {
+          name: input.name,
+          owner: {
+            connect: {
+              id: ctx.session.user.id,
+            },
+          },
+        },
+      });
+
+      return project;
+    }),
 });
