@@ -16,6 +16,7 @@ model Project {
     updatedAt DateTime @updatedAt
 
     name String
+    key  String? @unique
 
     allowedOrigins String[]
 
