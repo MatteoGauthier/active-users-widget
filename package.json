@@ -16,5 +16,8 @@
     "prettier": "^2.7.1",
     "turbo": "latest"
   },
-  "packageManager": "pnpm@7.25.1"
+  "packageManager": "pnpm@7.25.1",
+  "dependencies": {
+    "web": "link:apps/web"
+  }
 }

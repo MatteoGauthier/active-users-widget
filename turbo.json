@@ -18,6 +18,11 @@
         "^prisma:generate"
       ]
     },
+    "prisma:studio": {
+      "dependsOn": [
+        "^prisma:studio"
+      ]
+    },
     "lint": {},
     "dev": {
       "cache": false,

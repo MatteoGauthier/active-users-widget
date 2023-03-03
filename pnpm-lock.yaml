@@ -5,13 +5,11 @@ importers:
   .:
     specifiers:
       '@changesets/cli': ^2.26.0
-      eslint-config-custom: link:packages/eslint-config-custom
       prettier: ^2.7.1
-      tsconfig: link:packages/tsconfig
       turbo: latest
+      web: link:apps/web
     dependencies:
-      eslint-config-custom: link:packages/eslint-config-custom
-      tsconfig: link:packages/tsconfig
+      web: link:apps/web
     devDependencies:
       '@changesets/cli': 2.26.0
       prettier: 2.8.4
@@ -21,6 +19,7 @@ importers:
     specifiers:
       '@next-auth/prisma-adapter': ^1.0.5
       '@prisma/client': ^4.9.0
+      '@tailwindcss/forms': ^0.5.3
       '@tanstack/react-query': ^4.20.0
       '@trpc/client': ^10.9.0
       '@trpc/next': ^10.9.0
@@ -38,8 +37,9 @@ importers:
       dotenv-cli: ^7.0.0
       dotenv-flow-cli: ^1.0.0
       eslint: ^8.30.0
-      eslint-config-custom: '*'
+      eslint-config-custom: workspace:*
       eslint-config-next: 13.1.6
+      nanoid: ^4.0.1
       next: 13.1.6
       next-auth: ^4.19.0
       postcss: ^8.4.14
@@ -48,6 +48,7 @@ importers:
       prisma: ^4.9.0
       react: 18.2.0
       react-dom: 18.2.0
+      shiki: ^0.14.1
       superjson: 1.9.1
       tailwindcss: ^3.2.0
       tsconfig: workspace:*
@@ -62,6 +63,7 @@ importers:
       '@trpc/react-query': 10.13.2_4d7irbdidsmzpcceffzhg76qwi
       '@trpc/server': 10.13.2
       '@upstash/redis': 1.20.1
+      nanoid: 4.0.1
       next: 13.1.6_biqbaboplfbrettd7655fr4n2y
       next-auth: 4.19.2_3vryta7zmbcsw4rrqf4axjqggm
       react: 18.2.0
@@ -69,6 +71,7 @@ importers:
       superjson: 1.9.1
       zod: 3.20.6
     devDependencies:
+      '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.7
       '@types/node': 18.14.2
       '@types/prettier': 2.7.2
       '@types/react': 18.0.28
@@ -86,13 +89,14 @@ importers:
       prettier: 2.8.4
       prettier-plugin-tailwindcss: 0.2.3_prettier@2.8.4
       prisma: 4.11.0
+      shiki: 0.14.1
       tailwindcss: 3.2.7_postcss@8.4.21
       tsconfig: link:../../packages/tsconfig
       typescript: 4.9.5
 
   apps/widget:
     specifiers:
-      eslint-config-custom: '*'
+      eslint-config-custom: workspace:*
       np: 7.6.3
       sass: ^1.58.3
       tsconfig: workspace:*
@@ -850,6 +854,15 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
+  /@tailwindcss/forms/0.5.3_tailwindcss@3.2.7:
+    resolution: {integrity: sha512-y5mb86JUoiUgBjY/o6FJSFZSEttfb3Q5gllE4xoKjAAD+vBrnIhE4dViwUuow3va8mpH4s9jyUbUbrRGoRdc2Q==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || >= 3.0.0-alpha.1'
+    dependencies:
+      mini-svg-data-uri: 1.4.4
+      tailwindcss: 3.2.7_postcss@8.4.21
+    dev: true
+
   /@tanstack/query-core/4.24.10:
     resolution: {integrity: sha512-2QywqXEAGBIUoTdgn1lAB4/C8QEqwXHj2jrCLeYTk2xVGtLiPEUD8jcMoeB2noclbiW2mMt4+Fq7fZStuz3wAQ==}
     dev: false
@@ -1340,6 +1353,10 @@ packages:
   /ansi-regex/5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
+
+  /ansi-sequence-parser/1.1.0:
+    resolution: {integrity: sha512-lEm8mt52to2fT8GhciPCGeCXACSz2UwIN4X2e2LJSnZ5uAbn2/dsYdOmUXq0AtWS5cpAupysIneExOgH0Vd2TQ==}
+    dev: true
 
   /ansi-styles/2.2.1:
     resolution: {integrity: sha512-kmCevFghRiWM7HB5zTPULl4r9bVFSWjz62MhqizDGUrq2NWuNMQyuv4tHHoKJHs69M/MF64lEcHdYIocrdWQYA==}
@@ -3559,6 +3576,10 @@ packages:
       minimist: 1.2.8
     dev: true
 
+  /jsonc-parser/3.2.0:
+    resolution: {integrity: sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==}
+    dev: true
+
   /jsonfile/4.0.0:
     resolution: {integrity: sha512-m6F1R3z8jjlf2imQHS2Qez5sjKWQzbuuhuJ/FKYFRZvPE3PuHcSMVZzfsLhGVOkfd20obL5SWEBew5ShlquNxg==}
     optionalDependencies:
@@ -3886,6 +3907,11 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /mini-svg-data-uri/1.4.4:
+    resolution: {integrity: sha512-r9deDe9p5FJUPZAk3A59wGH7Ii9YrjjWw0jmw/liSbHl2CHiyXj6FcDXDu2K3TjVAXqiJdaw3xxwlZZr9E6nHg==}
+    hasBin: true
+    dev: true
+
   /minimatch/3.1.2:
     resolution: {integrity: sha512-J7p63hRiAjw1NDEww1W7i37+ByIrOWO5XQQAzZ3VOcL0PNybwpfmV/N05zFAzwQ9USyEcX6t3UO+K5aqBQOIHw==}
     dependencies:
@@ -3928,6 +3954,12 @@ packages:
     resolution: {integrity: sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
+
+  /nanoid/4.0.1:
+    resolution: {integrity: sha512-udKGtCCUafD3nQtJg9wBhRP3KMbPglUsgV5JVsXhvyBs/oefqb4sqMEhKBBgqZncYowu58p1prsZQBYvAj/Gww==}
+    engines: {node: ^14 || ^16 || >=18}
+    hasBin: true
+    dev: false
 
   /natural-compare-lite/1.4.0:
     resolution: {integrity: sha512-Tj+HTDSJJKaZnfiuw+iaF9skdPpTo2GtEly5JHnWV/hfv2Qj/9RKsGISQtLh2ox3l5EAGw487hnBee0sIJ6v2g==}
@@ -5036,6 +5068,15 @@ packages:
     resolution: {integrity: sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==}
     engines: {node: '>=8'}
 
+  /shiki/0.14.1:
+    resolution: {integrity: sha512-+Jz4nBkCBe0mEDqo1eKRcCdjRtrCjozmcbTUjbPTX7OOJfEbTZzlUWlZtGe3Gb5oV1/jnojhG//YZc3rs9zSEw==}
+    dependencies:
+      ansi-sequence-parser: 1.1.0
+      jsonc-parser: 3.2.0
+      vscode-oniguruma: 1.7.0
+      vscode-textmate: 8.0.0
+    dev: true
+
   /side-channel/1.0.4:
     resolution: {integrity: sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw==}
     dependencies:
@@ -5723,6 +5764,14 @@ packages:
       sass: 1.58.3
     optionalDependencies:
       fsevents: 2.3.2
+    dev: true
+
+  /vscode-oniguruma/1.7.0:
+    resolution: {integrity: sha512-L9WMGRfrjOhgHSdOYgCt/yRMsXzLDJSL7BPrOZt73gU0iWO4mpqzqQzOz5srxqTvMBaR0XZTSrVWo4j55Rc6cA==}
+    dev: true
+
+  /vscode-textmate/8.0.0:
+    resolution: {integrity: sha512-AFbieoL7a5LMqcnOF04ji+rpXadgOXnZsxQr//r83kLPr7biP7am3g9zbaZIaBGwBRWeSvoMD4mgPdX3e4NWBg==}
     dev: true
 
   /wcwidth/1.0.1:
