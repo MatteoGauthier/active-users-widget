@@ -12,9 +12,12 @@ async function init() {
   let HEADLESS: string | boolean = false
 
   if (document.currentScript) {
-    AUTOCAPTURE = document.currentScript.getAttribute("data-active-users-autocapture") || AUTOCAPTURE
-    PROJECT_ID = document.currentScript.getAttribute("data-active-users-project-id") || PROJECT_ID
-    HEADLESS = document.currentScript.getAttribute("data-active-users-headless") || HEADLESS
+    // @todo Document this
+    AUTOCAPTURE = document.currentScript.getAttribute("data-autocapture") || AUTOCAPTURE
+    // @todo Document this
+    PROJECT_ID = document.currentScript.getAttribute("data-project-id") || PROJECT_ID
+    // @todo Document this
+    HEADLESS = document.currentScript.getAttribute("data-headless") || HEADLESS
   }
 
   const existingWidgetElement = document.querySelector<HTMLDivElement>(`.${WIDGET_CLASS}`)
