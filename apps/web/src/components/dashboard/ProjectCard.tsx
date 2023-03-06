@@ -1,4 +1,5 @@
 import { Project } from "@prisma/client";
+import { toast } from "react-hot-toast";
 import { useClipboard } from "../../hooks/useClipboard";
 import CopyIcon from "../svgx/CopyIcon";
 
@@ -21,6 +22,7 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
 
   const copy = () => {
     clipboard.copy(cleanedRawCode);
+    toast.success(`Successfully copied to clipboard!`);
   };
 
   return (

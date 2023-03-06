@@ -7,9 +7,6 @@ importers:
       '@changesets/cli': ^2.26.0
       prettier: ^2.7.1
       turbo: latest
-      web: link:apps/web
-    dependencies:
-      web: link:apps/web
     devDependencies:
       '@changesets/cli': 2.26.0
       prettier: 2.8.4
@@ -48,6 +45,7 @@ importers:
       prisma: ^4.9.0
       react: 18.2.0
       react-dom: 18.2.0
+      react-hot-toast: ^2.4.0
       shiki: ^0.14.1
       superjson: 1.9.1
       tailwindcss: ^3.2.0
@@ -68,6 +66,7 @@ importers:
       next-auth: 4.19.2_3vryta7zmbcsw4rrqf4axjqggm
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-hot-toast: 2.4.0_biqbaboplfbrettd7655fr4n2y
       superjson: 1.9.1
       zod: 3.20.6
     devDependencies:
@@ -2928,6 +2927,12 @@ packages:
     resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
     dev: true
 
+  /goober/2.1.12:
+    resolution: {integrity: sha512-yXHAvO08FU1JgTXX6Zn6sYCUFfB/OJSX8HHjDSgerZHZmFKAb08cykp5LBw5QnmyMcZyPRMqkdyHUSSzge788Q==}
+    peerDependencies:
+      csstype: ^3.0.10
+    dev: false
+
   /gopd/1.0.1:
     resolution: {integrity: sha512-d65bNlIadxvpb/A2abVdlqKqV563juRnZ1Wtk6s1sIR8uNsXR70xqIzVqxVf1eTqDunwT2MkczEeaezCKTZhwA==}
     dependencies:
@@ -4780,6 +4785,20 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hot-toast/2.4.0_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-qnnVbXropKuwUpriVVosgo8QrB+IaPJCpL8oBI6Ov84uvHZ5QQcTp2qg6ku2wNfgJl6rlQXJIQU5q+5lmPOutA==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: '>=16'
+      react-dom: '>=16'
+    dependencies:
+      goober: 2.1.12
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    transitivePeerDependencies:
+      - csstype
     dev: false
 
   /react-is/16.13.1:

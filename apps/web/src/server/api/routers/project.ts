@@ -23,7 +23,7 @@ export const projectRouter = createTRPCRouter({
       theme: "github-light",
       langs: ["html"],
     });
-    const raw = `<script data-project-id="%PROJECT_ID%" src="https://unpkg.com/active-users-widget"  type="module" defer async></script>`;
+    const raw = `<script data-project-id="%PROJECT_ID%" src="https://unpkg.com/active-users-widget" defer async></script>`;
     const highlighted = highlighter.codeToHtml(raw, {
       lang: "html",
     });
