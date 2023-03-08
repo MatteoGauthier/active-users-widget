@@ -1,0 +1,13 @@
+{
+  "name": "shared-types",
+  "version": "0.0.0",
+  "main": "index.d.ts",
+  "private": true,
+  "license": "MIT",
+  "dependencies": {
+    "typescript": "4.9.4"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
