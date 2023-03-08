@@ -1,7 +1,11 @@
 import { Project } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
+import Link from "next/link";
 import { toast } from "react-hot-toast";
 import { useClipboard } from "../../hooks/useClipboard";
+import { getStatistics } from "../../utils/queries";
 import CopyIcon from "../svgx/CopyIcon";
+import SettingsIcon from "../svgx/SettingsIcon";
 
 type Props = {
   codeSnippet?: {
@@ -12,6 +16,12 @@ type Props = {
 };
 
 export default function ProjectCard({ codeSnippet, project }: Props) {
+  const { isLoading, data } = useQuery({
+    queryKey: ["project", project.key],
+    queryFn: getStatistics,
+    enabled: !!project.key,
+  });
+
   const clipboard = useClipboard();
 
   const cleanedHighlightedCode =
@@ -38,22 +48,38 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
             </span>
           </div>
 
-          <div className="inline-flex items-center space-x-1 rounded-sm border border-gray-200 px-2 py-1">
-            <span className="text-xs text-gray-800">Active</span>
-            <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500"></div>
+          <div className="flex items-center space-x-2">
+            <div className="inline-flex items-center space-x-1 rounded-sm border border-gray-200 px-2 py-1">
+              <span className="text-xs text-gray-800">Active</span>
+              <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500"></div>
+            </div>
+            <Link href={`/dashboard/${project.id}`}>
+              <SettingsIcon />
+            </Link>
           </div>
         </div>
-        <div className="mt-4">
+        <div className="mt-4 ">
           <div>
-            <span className="text-sm text-slate-600">
-              Visits in the last 30 minutes :{" "}
-              <span className="font-bold">0</span>
-            </span>
+            {isLoading && (
+              <div className="h-4 w-2/3 animate-pulse rounded bg-slate-100"></div>
+            )}
+            {data && (
+              <span className=" text-sm text-slate-600">
+                Visits in the last 30 minutes :{" "}
+                <span className="font-bold">{data.keys.length}</span>
+              </span>
+            )}
           </div>
           <div>
-            <span className="text-sm text-slate-600">
-              Total visits : <span className="font-bold">0</span>
-            </span>
+            {isLoading && (
+              <div className="mt-1 h-4 w-2/3 animate-pulse rounded bg-slate-100"></div>
+            )}
+            {data && (
+              <span className="text-sm text-slate-600">
+                Total visits : {/* @todo  */}
+                <span className="font-bold">{data.keys.length}</span>
+              </span>
+            )}
           </div>
         </div>{" "}
       </div>
