@@ -7,7 +7,8 @@
     "dev": "vite",
     "lint": "eslint --ext .js,.ts,.tsx . && tsc",
     "build": "npm run lint && vite build",
-    "release": "npm run build && np --no-tests"
+    "release": "npm run build && np --no-tests",
+    "capture-test-data": "dotenv-flow tsx ./scripts/capture-test-data.ts"
   },
   "keywords": [
     "statistics",
@@ -26,14 +27,15 @@
   ],
   "main": "./dist/widget.js",
   "devDependencies": {
+    "dotenv-flow-cli": "^1.0.0",
+    "eslint-config-custom": "workspace:*",
     "np": "7.6.3",
+    "sass": "^1.58.3",
+    "shared-types": "workspace:*",
+    "tsconfig": "workspace:*",
+    "tsx": "^3.12.3",
     "typescript": "^4.9.3",
     "vite": "^4.1.0",
-    "vite-plugin-css-injected-by-js": "^3.0.1",
-    "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*"
-  },
-  "dependencies": {
-    "sass": "^1.58.3"
+    "vite-plugin-css-injected-by-js": "^3.0.1"
   }
 }
