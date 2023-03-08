@@ -34,6 +34,7 @@ const server = z.object({
  */
 const client = z.object({
   // NEXT_PUBLIC_CLIENTVAR: z.string().min(1),
+  NEXT_PUBLIC_SERVICE_API_URL: z.string(),
 });
 
 /**
@@ -51,6 +52,7 @@ const processEnv = {
   UPSTASH_REDIS_REST_URL: process.env.UPSTASH_REDIS_REST_URL,
   UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   PRISMA_DEBUG: process.env.PRISMA_DEBUG,
+  NEXT_PUBLIC_SERVICE_API_URL: process.env.NEXT_PUBLIC_SERVICE_API_URL,
 };
 
 // Don't touch the part below

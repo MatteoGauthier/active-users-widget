@@ -9,6 +9,7 @@ type Props = {
 };
 const maxWidth = 560;
 
+// @todo Increase marker size based on number of visits
 export default function GlobeViz({ visitors }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const canvasRef = useRef<any>();
@@ -25,16 +26,6 @@ export default function GlobeViz({ visitors }: Props) {
     },
   }));
 
-  const centerCoordinates: [number, number] = useMemo(() => {
-    
-
-    // if (visitors) {
-    //   return [0, 0];
-    // }
-    // const lat = visitors.
-    return [0, 0];
-  }, [visitors]);
-
   const locations: Marker[] = useMemo(
     () =>
       visitors.map((e) => ({
@@ -44,47 +35,55 @@ export default function GlobeViz({ visitors }: Props) {
     [visitors]
   );
 
+  const averageLocation = useMemo(() => {
+    const avg = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
+    const latitudes = visitors.map((e) => Number(e.metadata.latitude) || 0);
+    const longitudes = visitors.map((e) => Number(e.metadata.longitude) || 0);
+    return {
+      latitude: avg(latitudes),
+      longitude: avg(longitudes),
+    };
+  }, [visitors]);
+
+  const locationToAngles = (lat: number, long: number) => {
+    return [
+      Math.PI - ((long * Math.PI) / 180 - Math.PI / 2),
+      (lat * Math.PI) / 180,
+    ];
+  };
+
+  const centeredPhi =
+    locationToAngles(averageLocation.latitude, averageLocation.longitude)[0] ||
+    Math.PI * 1.6;
+
   useEffect(() => {
-    // let phi = -0.5;
-
-    // Find phi based on center coordinates
-
-    // eslint-disable-next-line prefer-const
-    let phi = Math.atan2(
-      Math.sqrt(
-        Math.pow(Math.cos(centerCoordinates[0]), 2) *
-          Math.pow(Math.cos(centerCoordinates[1]), 2)
-      ),
-      Math.sin(centerCoordinates[0])
-    );
     let width = 0;
     const onResize = () =>
       canvasRef.current && (width = canvasRef.current.offsetWidth);
-    console.log(width);
     window.addEventListener("resize", onResize);
     onResize();
 
     const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: 1 || window.devicePixelRatio,
-      width: width,
-      height: width,
-      phi,
+      devicePixelRatio: window.devicePixelRatio,
+      width: width * window.devicePixelRatio,
+      height: width * window.devicePixelRatio,
+      phi: centeredPhi,
       theta: 0.15,
       dark: 0,
       diffuse: 1.2,
-      // scale: 1,
       mapSamples: 16000,
       mapBrightness: 4,
       baseColor: [1, 1, 1],
       markerColor: [249 / 255, 115 / 255, 22 / 255],
       offset: [0, 0],
       glowColor: [0.8, 0.8, 0.8],
-      markers: locations || [],
+      markers: locations,
+
       onRender: (state) => {
-        // phi += 0.002;
-        state.phi = phi + r.get();
-        state.width = width;
-        state.height = width;
+        state.phi = centeredPhi + r.get();
+
+        state.width = width * window.devicePixelRatio;
+        state.height = width * window.devicePixelRatio;
       },
     });
 
@@ -118,7 +117,7 @@ export default function GlobeViz({ visitors }: Props) {
           canvasRef.current.style.cursor = "grab";
         }}
         onMouseMove={(e) => {
-          if (pointerInteracting.current !== null) {
+          if (typeof pointerInteracting.current == "number") {
             const delta = e.clientX - pointerInteracting.current;
             pointerInteractionMovement.current = delta;
             api.start({
@@ -127,8 +126,10 @@ export default function GlobeViz({ visitors }: Props) {
           }
         }}
         onTouchMove={(e) => {
-          if (pointerInteracting.current !== null && e.touches[0]) {
-            const delta = e.touches[0].clientX - pointerInteracting.current;
+          if (typeof pointerInteracting.current == "number" && e.touches[0]) {
+            const delta = e.touches[0]
+              ? e.touches[0]?.clientX - pointerInteracting.current
+              : 0;
             pointerInteractionMovement.current = delta;
             api.start({
               r: delta / 100,

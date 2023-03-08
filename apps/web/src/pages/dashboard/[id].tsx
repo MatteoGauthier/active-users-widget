@@ -7,6 +7,9 @@ import { prisma } from "../../server/db";
 
 import { serialize } from "superjson";
 import { Project } from "@prisma/client";
+import { useQuery } from "@tanstack/react-query";
+import { getStatistics } from "../../utils/queries";
+import GlobeViz from "../../components/dashboard/GlobeViz";
 
 export const getStaticProps = async (
   context: GetStaticPropsContext<{ id: string }>
@@ -50,6 +53,12 @@ export default function PostViewPage(
 ) {
   const { project, id } = props;
 
+  const { isLoading, data } = useQuery({
+    queryKey: ["project", project.key],
+    queryFn: getStatistics,
+    enabled: !!project.key,
+  });
+
   if (!project) {
     return <div>Project not found</div>;
   }
@@ -58,6 +67,7 @@ export default function PostViewPage(
     <>
       <h1>{project.name}</h1>
       <em>Created {new Date(project.createdAt).toLocaleDateString()}</em>
+      {data && <GlobeViz visitors={data.keys} />}
 
       <pre>{JSON.stringify(project, null, 4)}</pre>
     </>
