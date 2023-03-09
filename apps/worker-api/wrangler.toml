@@ -1,0 +1,6 @@
+name = "active-users-worker"
+main = "src/index.ts"
+compatibility_date = "2023-02-09"
+kv_namespaces = [
+  { binding = "VIEWS", id = "65d6ae8be2ca4344957c611714ec32bc", preview_id = "cbf26c31d36e4252bdf8e701a22a1b35" },
+]
