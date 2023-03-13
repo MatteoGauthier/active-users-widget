@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import { serialize } from "superjson";
 import GlobeViz from "../../components/dashboard/GlobeViz";
 import { getStatistics } from "../../utils/queries";
+import DashboardLayout from "../../components/layout/DashboardLayout";
+import StatsBanner from "../../components/dashboard/detail/StatsBanner";
 
 export const getStaticProps = async (
   context: GetStaticPropsContext<{ id: string }>
@@ -53,6 +55,7 @@ export default function PostViewPage(
 ) {
   const { project } = props;
 
+  // @todo maybe add a rate limiter to prevent over usage of the /stats endpoint
   const { data } = useQuery({
     queryKey: ["project", project.key],
     queryFn: getStatistics,
@@ -64,12 +67,25 @@ export default function PostViewPage(
   }
 
   return (
-    <>
-      <h1>{project.name}</h1>
-      <em>Created {new Date(project.createdAt).toLocaleDateString()}</em>
-      {data && <GlobeViz visitors={data.keys} />}
-
-      <pre>{JSON.stringify(project, null, 4)}</pre>
-    </>
+    <DashboardLayout>
+      <div
+        className={
+          "mt-10 mb-20 rounded-lg border border-gray-100 bg-white px-6 pt-8 pb-4 shadow"
+        }
+      >
+        <div className="mb-4 flex justify-between">
+          <div>
+            <h1 className="font-display text-3xl font-semibold text-slate-900">
+              {project.name}
+            </h1>
+            <em className="text-gray-500">
+              Created {new Date(project.createdAt).toLocaleDateString()}
+            </em>
+          </div>
+        </div>
+        <StatsBanner projectKey={project.key} />
+        {data && <GlobeViz visitors={data.keys} />}
+      </div>
+    </DashboardLayout>
   );
 }
