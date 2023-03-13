@@ -5,11 +5,11 @@ import {
 } from "next";
 import { prisma } from "../../server/db";
 
-import { serialize } from "superjson";
 import { Project } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { getStatistics } from "../../utils/queries";
+import { serialize } from "superjson";
 import GlobeViz from "../../components/dashboard/GlobeViz";
+import { getStatistics } from "../../utils/queries";
 
 export const getStaticProps = async (
   context: GetStaticPropsContext<{ id: string }>
@@ -51,9 +51,9 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export default function PostViewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
-  const { project, id } = props;
+  const { project } = props;
 
-  const { isLoading, data } = useQuery({
+  const { data } = useQuery({
     queryKey: ["project", project.key],
     queryFn: getStatistics,
     enabled: !!project.key,
