@@ -1,8 +1,6 @@
-import { GetServerSideProps, InferGetServerSidePropsType } from "next";
-import shiki from "shiki";
 import NewProjectCard from "../../components/dashboard/NewProjectCard";
 import ProjectCard from "../../components/dashboard/ProjectCard";
-import { prisma } from "../../server/db";
+import DashboardLayout from "../../components/layout/DashboardLayout";
 import { api } from "../../utils/api";
 
 export default function DashboardPage() {
@@ -12,20 +10,22 @@ export default function DashboardPage() {
   const code = dashboardProjects.data?.code;
 
   return (
-    <div className="mx-auto max-w-screen-lg">
-      <h1>Dashboard</h1>
-
-      <div className="grid grid-cols-1">
-        <div>
-          <h2>Projects</h2>
-          <div className="flex flex-col space-y-3">
-            {projects?.map((project) => (
-              <ProjectCard project={project} key={"dashboard-" + project.id} codeSnippet={code}/>
-            ))}
-            <NewProjectCard />
-          </div>
+    <DashboardLayout>
+      <div>
+        <h2 className="mt-8 mb-4 font-display text-3xl font-semibold">
+          Projects
+        </h2>
+        <div className="flex flex-col space-y-3">
+          {projects?.map((project) => (
+            <ProjectCard
+              project={project}
+              key={"dashboard-" + project.id}
+              codeSnippet={code}
+            />
+          ))}
+          <NewProjectCard />
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }
