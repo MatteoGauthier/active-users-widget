@@ -37,7 +37,7 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
 
   return (
     <article className="grid grid-cols-6 gap-4 rounded-md border border-slate-100 p-4">
-      <div className="col-span-2">
+      <Link href={`/dashboard/${project.id}`} className="col-span-2">
         <div className="flex items-center justify-between space-x-2">
           <div className="flex flex-col items-start">
             <span className="rounded-lg font-sans font-medium">
@@ -53,9 +53,6 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
               <span className="text-xs text-gray-800">Active</span>
               <div className="h-1.5 w-1.5 animate-pulse rounded-full bg-green-500"></div>
             </div>
-            <Link href={`/dashboard/${project.id}`}>
-              <SettingsIcon />
-            </Link>
           </div>
         </div>
         <div className="mt-4 ">
@@ -82,7 +79,7 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
             )}
           </div>
         </div>{" "}
-      </div>
+      </Link>
       {cleanedHighlightedCode && (
         <div className="col-span-4">
           <div className=" rounded-md bg-gradient-to-br from-slate-50 to-slate-200 px-3 py-3">
