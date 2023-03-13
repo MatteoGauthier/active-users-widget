@@ -5,7 +5,6 @@ import { toast } from "react-hot-toast";
 import { useClipboard } from "../../hooks/useClipboard";
 import { getStatistics } from "../../utils/queries";
 import CopyIcon from "../svgx/CopyIcon";
-import SettingsIcon from "../svgx/SettingsIcon";
 
 type Props = {
   codeSnippet?: {
