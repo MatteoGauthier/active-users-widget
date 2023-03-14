@@ -5,12 +5,7 @@ export interface StatisticsJson {
     latitude: number
     longitude: number
   } | null
-}
-
-export interface Key {
-  name: string
-  expiration: number
-  metadata: Metadata
+  views: KVNamespaceListKey<Metadata, string>[]
 }
 
 export interface Metadata {

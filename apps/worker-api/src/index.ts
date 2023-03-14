@@ -1,6 +1,6 @@
 import { cors } from "hono/cors"
 import { nanoid } from "nanoid"
-import { StatisticsJson } from "shared-types"
+import { Metadata, StatisticsJson } from "shared-types"
 
 import { Hono } from "hono"
 import { saveView } from "./lib/methods"
@@ -31,10 +31,7 @@ app.get("/:projectId/capture", async (c) => {
 })
 
 app.get("/:projectId/stats", async (c) => {
-  let lastViews = await c.env.VIEWS.list<{
-    longitude: string
-    latitude: string
-  }>({
+  let lastViews = await c.env.VIEWS.list<Metadata>({
     prefix: `${c.req.param().projectId}:`,
   })
   let totalViewsResult = await c.env.VIEWS.get(`${c.req.param().projectId}:total`, "text")
@@ -58,6 +55,7 @@ app.get("/:projectId/stats", async (c) => {
     last30days: lastViews.keys.length,
     totalViews,
     averageViewsLocation: averageViewsLocation(),
+    views: lastViews.keys,
   }
   return c.json(result)
 })
