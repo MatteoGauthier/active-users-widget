@@ -27,6 +27,7 @@
   ],
   "main": "./dist/widget.js",
   "devDependencies": {
+    "@types/node": "^18.11.18",
     "dotenv-flow-cli": "^1.0.0",
     "eslint-config-custom": "workspace:*",
     "np": "7.6.3",

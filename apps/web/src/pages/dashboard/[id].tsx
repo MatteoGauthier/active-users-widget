@@ -84,7 +84,12 @@ export default function PostViewPage(
           </div>
         </div>
         <StatsBanner projectKey={project.key} />
-        {data && <GlobeViz visitors={data.keys} />}
+        {data && (
+          <GlobeViz
+            visitors={data.views}
+            averageLocation={data.averageViewsLocation}
+          />
+        )}
       </div>
     </DashboardLayout>
   );

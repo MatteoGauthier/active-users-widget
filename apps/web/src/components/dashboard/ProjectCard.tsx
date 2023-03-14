@@ -62,7 +62,7 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
             {data && (
               <span className=" text-sm text-slate-600">
                 Visits in the last 30 minutes :{" "}
-                <span className="font-bold">{data.keys.length}</span>
+                <span className="font-bold">{data.last30Minutes}</span>
               </span>
             )}
           </div>
@@ -73,7 +73,7 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
             {data && (
               <span className="text-sm text-slate-600">
                 Total visits : {/* @todo  */}
-                <span className="font-bold">{data.keys.length}</span>
+                <span className="font-bold">{data.totalViews}</span>
               </span>
             )}
           </div>

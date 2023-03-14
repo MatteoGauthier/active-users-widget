@@ -5,12 +5,16 @@ import { useSpring } from "react-spring";
 import { StatisticsJson } from "shared-types";
 
 type Props = {
-  visitors: StatisticsJson["keys"];
+  visitors: StatisticsJson["views"];
+  averageLocation: {
+    latitude: number;
+    longitude: number;
+  } | null;
 };
 const maxWidth = 560;
 
 // @todo Increase marker size based on number of visits
-export default function GlobeViz({ visitors }: Props) {
+export default function GlobeViz({ visitors, averageLocation }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const canvasRef = useRef<any>();
   const pointerInteracting = useRef<number | null>(null);
@@ -28,22 +32,19 @@ export default function GlobeViz({ visitors }: Props) {
 
   const locations: Marker[] = useMemo(
     () =>
-      visitors.map((e) => ({
-        location: [Number(e.metadata.latitude), Number(e.metadata.longitude)],
-        size: 0.1,
-      })),
+      visitors
+        .filter((e) => e.metadata?.latitude && e.metadata?.longitude)
+        .map((e) => {
+          return {
+            location: [
+              Number(e.metadata?.latitude),
+              Number(e.metadata?.longitude),
+            ],
+            size: 0.1,
+          };
+        }),
     [visitors]
   );
-
-  const averageLocation = useMemo(() => {
-    const avg = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
-    const latitudes = visitors.map((e) => Number(e.metadata.latitude) || 0);
-    const longitudes = visitors.map((e) => Number(e.metadata.longitude) || 0);
-    return {
-      latitude: avg(latitudes),
-      longitude: avg(longitudes),
-    };
-  }, [visitors]);
 
   const locationToAngles = (lat: number, long: number) => {
     return [
@@ -52,9 +53,12 @@ export default function GlobeViz({ visitors }: Props) {
     ];
   };
 
-  const centeredPhi =
-    locationToAngles(averageLocation.latitude, averageLocation.longitude)[0] ||
-    Math.PI * 1.6;
+  const centeredPhi = averageLocation
+    ? locationToAngles(
+        averageLocation.latitude,
+        averageLocation.longitude
+      )[0] || Math.PI * 1.6
+    : Math.PI * 1.6;
 
   useEffect(() => {
     let width = 0;
@@ -77,7 +81,7 @@ export default function GlobeViz({ visitors }: Props) {
       markerColor: [249 / 255, 115 / 255, 22 / 255],
       offset: [0, 0],
       glowColor: [0.8, 0.8, 0.8],
-      markers: locations,
+      markers: locations || [],
 
       onRender: (state) => {
         state.phi = centeredPhi + r.get();
@@ -89,6 +93,9 @@ export default function GlobeViz({ visitors }: Props) {
 
     setTimeout(() => (canvasRef.current.style.opacity = "1"));
     return () => globe.destroy();
+
+    // The globe is mounted one time, and refs values update canvas
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
