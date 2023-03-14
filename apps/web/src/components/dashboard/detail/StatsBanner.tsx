@@ -28,7 +28,7 @@ export default function StatsBanner({ projectKey }: Props) {
     color: Color;
   }[] = [
     {
-      title: "Last 30 days",
+      title: "Last 30 minutes",
       metric: formatStatNumber(data.last30Minutes),
       icon: CalendarIcon,
       color: "indigo",
