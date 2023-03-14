@@ -33,9 +33,9 @@ async function init() {
       const widgetElement = document.querySelector<HTMLDivElement>(`.${WIDGET_CLASS}`)
 
       const stats = await api.getStatistics(PROJECT_ID)
-      if (stats.keys.length !== 0 && widgetElement) {
+      if (stats.last30days !== 0 && widgetElement) {
         widgetElement.innerHTML = template({
-          count: stats.keys.length,
+          count: stats.last30days,
           // @todo use real avatars
           avatars: [
             "https://i.pravatar.cc/20?1",
