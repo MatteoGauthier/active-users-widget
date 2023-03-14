@@ -1,6 +1,6 @@
 import { cors } from "hono/cors"
 import { nanoid } from "nanoid"
-import { Metadata, StatisticsJson } from "shared-types"
+import { Key, Metadata, StatisticsJson } from "shared-types"
 
 import { Hono } from "hono"
 import { saveView } from "./lib/methods"
@@ -55,7 +55,7 @@ app.get("/:projectId/stats", async (c) => {
     last30Minutes: lastViews.keys.length,
     totalViews,
     averageViewsLocation: averageViewsLocation(),
-    views: lastViews.keys,
+    views: lastViews.keys as Key[],
   }
   return c.json(result)
 })
