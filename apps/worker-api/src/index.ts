@@ -2,6 +2,7 @@ import { cors } from "hono/cors"
 import { nanoid } from "nanoid"
 
 import { Hono } from "hono"
+import { saveView } from "./lib/methods"
 export interface Env {
   VIEWS: KVNamespace
 }
@@ -16,24 +17,12 @@ app.use(
 
 app.get("/:projectId/capture", async (c) => {
   const id = nanoid()
-  const key = `${c.req.param().projectId}:${id}`
+  const viewKey = `${c.req.param().projectId}:${id}`
+  const totalKey = `${c.req.param().projectId}:total`
 
   const geo = c.req.cf as any
 
-  let value = await c.env.VIEWS.put(key, `v_${key}`, {
-    metadata: {
-      time: new Date().toISOString(),
-      ip: c.req.headers.get("CF-Connecting-IP") || "unknown",
-      realIp: c.req.headers.get("X-Real-IP") || "unknown",
-      ua: c.req.headers.get("User-Agent") || "unknown",
-      country: geo?.country || "unknown",
-      city: geo?.city || "unknown",
-      region: geo?.region || "unknown",
-      longitude: geo?.longitude || "unknown",
-      latitude: geo?.latitude || "unknown",
-    },
-    expirationTtl: 60 * 30,
-  })
+  saveView({ context: c, viewKey, totalKey, geo })
 
   return c.json({
     message: "Captured",
@@ -41,10 +30,17 @@ app.get("/:projectId/capture", async (c) => {
 })
 
 app.get("/:projectId/stats", async (c) => {
-  let views = await c.env.VIEWS.list({
+  let lastViews = await c.env.VIEWS.list({
     prefix: `${c.req.param().projectId}:`,
   })
-  return c.json(views)
+  let totalViewsResult = await c.env.VIEWS.get(`${c.req.param().projectId}:total`, "text")
+  let totalViews = totalViewsResult ? parseInt(totalViewsResult) : null
+
+  const result = {
+    last30days: lastViews.keys.length,
+    totalViews,
+  }
+  return c.json(result)
 })
 
 app.get("/global", async (c) => {
