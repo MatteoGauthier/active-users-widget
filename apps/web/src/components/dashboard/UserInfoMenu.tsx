@@ -23,6 +23,8 @@ export default function UserInfoMenu() {
                   className="h-8 w-8 rounded-full"
                   src={sessionData.user.image}
                   alt="User image avatar"
+                  width={32}
+                  height={32}
                 />
               )}
             </Menu.Button>
