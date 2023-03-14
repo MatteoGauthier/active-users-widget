@@ -23,7 +23,7 @@ app.get("/:projectId/capture", async (c) => {
 
   const geo = c.req.cf as any
 
-  saveView({ context: c, viewKey, totalKey, geo })
+  c.executionCtx.waitUntil(saveView({ context: c, viewKey, totalKey, geo }))
 
   return c.json({
     message: "Captured",

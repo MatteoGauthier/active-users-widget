@@ -21,6 +21,7 @@ export async function saveView({ context: c, geo, viewKey, totalKey }: Args) {
       longitude: geo?.longitude || "unknown",
       latitude: geo?.latitude || "unknown",
     },
+    /// 30 minutes
     expirationTtl: 60 * 30,
   })
 
@@ -28,8 +29,5 @@ export async function saveView({ context: c, geo, viewKey, totalKey }: Args) {
   let currentTotal = currentTotalResult ? parseInt(currentTotalResult) : 0
   const savedNewTotal = await c.env.VIEWS.put(totalKey, `${currentTotal + 1}`)
 
-  return {
-    savedView,
-    savedNewTotal,
-  }
+  return
 }
