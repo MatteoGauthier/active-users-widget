@@ -29,14 +29,14 @@ export default function StatsBanner({ projectKey }: Props) {
   }[] = [
     {
       title: "Last 30 days",
-      metric: formatStatNumber(data.keys.length),
+      metric: formatStatNumber(data.last30days),
       icon: CalendarIcon,
       color: "indigo",
     },
     {
       title: "Total views",
       // @todo Replace with real data
-      metric: formatStatNumber(data.keys.length ** 4),
+      metric: data.totalViews ? formatStatNumber(data.totalViews) : "--",
       icon: LayerIcon,
       color: "fuchsia",
     },

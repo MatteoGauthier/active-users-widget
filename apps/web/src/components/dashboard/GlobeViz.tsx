@@ -5,12 +5,16 @@ import { useSpring } from "react-spring";
 import { StatisticsJson } from "shared-types";
 
 type Props = {
-  visitors: StatisticsJson["keys"];
+  visitors: StatisticsJson["views"];
+  averageLocation: {
+    latitude: number;
+    longitude: number;
+  } | null;
 };
 const maxWidth = 560;
 
 // @todo Increase marker size based on number of visits
-export default function GlobeViz({ visitors }: Props) {
+export default function GlobeViz({ visitors, averageLocation }: Props) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const canvasRef = useRef<any>();
   const pointerInteracting = useRef<number | null>(null);
@@ -35,16 +39,6 @@ export default function GlobeViz({ visitors }: Props) {
     [visitors]
   );
 
-  const averageLocation = useMemo(() => {
-    const avg = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length;
-    const latitudes = visitors.map((e) => Number(e.metadata.latitude) || 0);
-    const longitudes = visitors.map((e) => Number(e.metadata.longitude) || 0);
-    return {
-      latitude: avg(latitudes),
-      longitude: avg(longitudes),
-    };
-  }, [visitors]);
-
   const locationToAngles = (lat: number, long: number) => {
     return [
       Math.PI - ((long * Math.PI) / 180 - Math.PI / 2),
@@ -52,9 +46,12 @@ export default function GlobeViz({ visitors }: Props) {
     ];
   };
 
-  const centeredPhi =
-    locationToAngles(averageLocation.latitude, averageLocation.longitude)[0] ||
-    Math.PI * 1.6;
+  const centeredPhi = averageLocation
+    ? locationToAngles(
+        averageLocation.latitude,
+        averageLocation.longitude
+      )[0] || Math.PI * 1.6
+    : Math.PI * 1.6;
 
   useEffect(() => {
     let width = 0;
