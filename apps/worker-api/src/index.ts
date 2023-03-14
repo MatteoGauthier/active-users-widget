@@ -42,6 +42,9 @@ app.get("/:projectId/stats", async (c) => {
 
   // @todo move this to a separate method
   const averageViewsLocation = () => {
+    if (lastViews.keys.length === 0) {
+      return null
+    }
     const avg = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length
     const latitudes = lastViews.keys.map((e) => Number(e?.metadata?.latitude) || 0)
     const longitudes = lastViews.keys.map((e) => Number(e?.metadata?.longitude) || 0)

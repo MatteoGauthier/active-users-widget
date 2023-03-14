@@ -1,6 +1,10 @@
 export interface StatisticsJson {
-  list_complete: boolean
-  keys: Key[]
+  last30days: number
+  totalViews: number | null
+  averageViewsLocation: {
+    latitude: number
+    longitude: number
+  } | null
 }
 
 export interface Key {
