@@ -62,7 +62,7 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
             {data && (
               <span className=" text-sm text-slate-600">
                 Visits in the last 30 minutes :{" "}
-                <span className="font-bold">{data.last30days}</span>
+                <span className="font-bold">{data.last30Minutes}</span>
               </span>
             )}
           </div>

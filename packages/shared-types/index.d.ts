@@ -1,5 +1,5 @@
 export interface StatisticsJson {
-  last30days: number
+  last30Minutes: number
   totalViews: number | null
   averageViewsLocation: {
     latitude: number

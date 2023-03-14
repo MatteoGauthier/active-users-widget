@@ -52,7 +52,7 @@ app.get("/:projectId/stats", async (c) => {
   }
 
   const result: StatisticsJson = {
-    last30days: lastViews.keys.length,
+    last30Minutes: lastViews.keys.length,
     totalViews,
     averageViewsLocation: averageViewsLocation(),
     views: lastViews.keys,
