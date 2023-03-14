@@ -32,10 +32,17 @@ export default function GlobeViz({ visitors, averageLocation }: Props) {
 
   const locations: Marker[] = useMemo(
     () =>
-      visitors.map((e) => ({
-        location: [Number(e.metadata.latitude), Number(e.metadata.longitude)],
-        size: 0.1,
-      })),
+      visitors
+        .filter((e) => e.metadata?.latitude && e.metadata?.longitude)
+        .map((e) => {
+          return {
+            location: [
+              Number(e.metadata?.latitude),
+              Number(e.metadata?.longitude),
+            ],
+            size: 0.1,
+          };
+        }),
     [visitors]
   );
 
@@ -74,7 +81,7 @@ export default function GlobeViz({ visitors, averageLocation }: Props) {
       markerColor: [249 / 255, 115 / 255, 22 / 255],
       offset: [0, 0],
       glowColor: [0.8, 0.8, 0.8],
-      markers: locations,
+      markers: locations || [],
 
       onRender: (state) => {
         state.phi = centeredPhi + r.get();
@@ -86,6 +93,9 @@ export default function GlobeViz({ visitors, averageLocation }: Props) {
 
     setTimeout(() => (canvasRef.current.style.opacity = "1"));
     return () => globe.destroy();
+
+    // The globe is mounted one time, and refs values update canvas
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
