@@ -27,7 +27,11 @@ export async function saveView({ context: c, geo, viewKey, totalKey }: Args) {
 
   let currentTotalResult = await c.env.VIEWS.get(totalKey, "text")
   let currentTotal = currentTotalResult ? parseInt(currentTotalResult) : 0
-  const savedNewTotal = await c.env.VIEWS.put(totalKey, `${currentTotal + 1}`)
+  const savedNewTotal = await c.env.VIEWS.put(totalKey, `${currentTotal + 1}`, {
+    metadata: {
+      isTotalKey: true,
+    },
+  })
 
   return
 }

@@ -6,7 +6,7 @@ export interface StatisticsJson {
     longitude: number
   } | null
   views: Key[]
-  topCountry: string
+  topCountry: string | null
 }
 
 export interface Key {
@@ -25,4 +25,5 @@ export interface Metadata {
   region: string
   longitude: string
   latitude: string
+  isTotalKey?: boolean
 }

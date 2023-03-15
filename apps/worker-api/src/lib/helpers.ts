@@ -1,6 +1,6 @@
 import { Key } from "shared-types"
 
-export const averageLocation = (
+export const averageLocationFromKeys = (
   locations?: {
     metadata?: {
       latitude: string
@@ -20,20 +20,28 @@ export const averageLocation = (
   }
 }
 
-export const findTopCountry = (
+export const findTopCountryFromKeys = (
   locations: {
     metadata?: {
       country?: string | null
     }
   }[]
 ) => {
-  const countries = locations.map((e) => e?.metadata?.country).filter((e) => e !== null)
+  if (locations.length === 0) return null
+  const countries = locations
+    .filter((e) => e.metadata?.country)
+    .map((e) => e?.metadata?.country)
+    .filter((item): item is string => !!item)
+
+  if (countries.length === 0) return null
+
   const countryCount = countries.reduce((acc, cur) => {
     if (cur) {
       acc[cur] = (acc[cur] || 0) + 1
     }
     return acc
   }, {} as Record<string, number>)
-  const topCountry = Object.keys(countryCount).reduce((a, b) => (countryCount[a] > countryCount[b] ? a : b))
+  const countriesKeys = Object.keys(countryCount)
+  const topCountry = countriesKeys.reduce((a, b) => (countryCount[a] > countryCount[b] ? a : b))
   return topCountry
 }
