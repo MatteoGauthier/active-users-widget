@@ -6,6 +6,7 @@ export interface StatisticsJson {
     longitude: number
   } | null
   views: Key[]
+  topCountry: string
 }
 
 export interface Key {

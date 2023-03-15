@@ -4,6 +4,7 @@ import { Key, Metadata, StatisticsJson } from "shared-types"
 
 import { Hono } from "hono"
 import { saveView } from "./lib/methods"
+import { averageLocation, findTopCountry } from "./lib/helpers"
 export interface Env {
   VIEWS: KVNamespace
 }
@@ -37,25 +38,14 @@ app.get("/:projectId/stats", async (c) => {
   let totalViewsResult = await c.env.VIEWS.get(`${c.req.param().projectId}:total`, "text")
   let totalViews = totalViewsResult ? parseInt(totalViewsResult) : null
 
-  // @todo move this to a separate method
-  const averageViewsLocation = () => {
-    if (lastViews.keys.length === 0) {
-      return null
-    }
-    const avg = (arr: number[]) => arr.reduce((a, b) => a + b, 0) / arr.length
-    const latitudes = lastViews.keys.map((e) => Number(e?.metadata?.latitude) || 0)
-    const longitudes = lastViews.keys.map((e) => Number(e?.metadata?.longitude) || 0)
-    return {
-      latitude: avg(latitudes),
-      longitude: avg(longitudes),
-    }
-  }
+
 
   const result: StatisticsJson = {
     last30Minutes: lastViews.keys.length,
     totalViews,
-    averageViewsLocation: averageViewsLocation(),
+    averageViewsLocation: averageLocation(lastViews.keys),
     views: lastViews.keys as Key[],
+    topCountry: findTopCountry(lastViews.keys),
   }
   return c.json(result)
 })
