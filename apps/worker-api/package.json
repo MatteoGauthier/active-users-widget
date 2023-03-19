@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "wrangler dev --local",
-    "deploy": "wrangler publish",
-    "test": "vitest"
+    "post-build": "tsx ./scripts/country-list.ts",
+    "dev": "npm run post-build && wrangler dev --local",
+    "deploy": "npm run post-build && wrangler publish",
+    "test": "npm run post-build && vitest"
   },
   "dependencies": {
     "hono": "^2.7.6",

@@ -6,7 +6,10 @@ export interface StatisticsJson {
     longitude: number
   } | null
   views: Key[]
-  topCountry: string | null
+  topCountry?: {
+    code: string
+    formattedText: string
+  }
 }
 
 export interface Key {

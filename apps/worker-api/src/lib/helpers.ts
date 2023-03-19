@@ -1,4 +1,4 @@
-import { Key } from "shared-types"
+import countriesDatabase from "./country-list"
 
 export const averageLocationFromKeys = (
   locations?: {
@@ -43,5 +43,11 @@ export const findTopCountryFromKeys = (
   }, {} as Record<string, number>)
   const countriesKeys = Object.keys(countryCount)
   const topCountry = countriesKeys.reduce((a, b) => (countryCount[a] > countryCount[b] ? a : b))
-  return topCountry
+  console.log(countriesDatabase)
+  const [countryName, countryCode, countryEmoji] = countriesDatabase.find((e) => e[1] === topCountry)!
+
+  return {
+    code: topCountry,
+    formattedText: `${countryEmoji} ${countryName}`,
+  }
 }

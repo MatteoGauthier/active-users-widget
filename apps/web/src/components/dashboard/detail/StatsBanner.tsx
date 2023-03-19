@@ -43,7 +43,7 @@ export default function StatsBanner({ projectKey }: Props) {
     {
       title: "Most popular country",
       // @todo Replace with real data
-      metric: "🇫🇷 France",
+      metric: data.topCountry?.formattedText || "--",
       icon: GlobeIcon,
       color: "amber",
     },
