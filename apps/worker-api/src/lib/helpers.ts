@@ -43,7 +43,6 @@ export const findTopCountryFromKeys = (
   }, {} as Record<string, number>)
   const countriesKeys = Object.keys(countryCount)
   const topCountry = countriesKeys.reduce((a, b) => (countryCount[a] > countryCount[b] ? a : b))
-  console.log(countriesDatabase)
   const [countryName, countryCode, countryEmoji] = countriesDatabase.find((e) => e[1] === topCountry)!
 
   return {
