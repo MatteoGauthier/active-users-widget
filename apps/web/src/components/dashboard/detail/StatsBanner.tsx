@@ -28,22 +28,22 @@ export default function StatsBanner({ projectKey }: Props) {
     color: Color;
   }[] = [
     {
-      title: "Last 30 days",
-      metric: formatStatNumber(data.keys.length),
+      title: "Last 30 minutes",
+      metric: formatStatNumber(data.last30Minutes),
       icon: CalendarIcon,
       color: "indigo",
     },
     {
       title: "Total views",
       // @todo Replace with real data
-      metric: formatStatNumber(data.keys.length ** 4),
+      metric: data.totalViews ? formatStatNumber(data.totalViews) : "--",
       icon: LayerIcon,
       color: "fuchsia",
     },
     {
       title: "Most popular country",
       // @todo Replace with real data
-      metric: "🇫🇷 France",
+      metric: data.topCountry?.formattedText || "--",
       icon: GlobeIcon,
       color: "amber",
     },

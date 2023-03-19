@@ -1,4 +1,4 @@
 {
   "extends": "tsconfig/widget.json",
-  "include": ["src", "../../packages/shared-types/index.d.ts"]
+  "include": ["src", "../../packages/shared-types/index.d.ts", "scripts"]
 }

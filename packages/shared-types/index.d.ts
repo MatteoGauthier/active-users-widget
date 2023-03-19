@@ -1,11 +1,20 @@
 export interface StatisticsJson {
-  list_complete: boolean
-  keys: Key[]
+  last30Minutes: number
+  totalViews: number | null
+  averageViewsLocation: {
+    latitude: number
+    longitude: number
+  } | null
+  views: Key[]
+  topCountry?: {
+    code: string
+    formattedText: string
+  }
 }
 
 export interface Key {
   name: string
-  expiration: number
+  expiration?: number
   metadata: Metadata
 }
 
@@ -19,4 +28,5 @@ export interface Metadata {
   region: string
   longitude: string
   latitude: string
+  isTotalKey?: boolean
 }

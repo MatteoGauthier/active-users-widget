@@ -1,6 +1,7 @@
 import { Menu, Transition } from "@headlessui/react";
 import clsx from "clsx";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 
@@ -17,11 +18,15 @@ export default function UserInfoMenu() {
             </span>
             <Menu.Button className="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
               <span className="sr-only">Open user menu</span>
-              <img
-                className="h-8 w-8 rounded-full"
-                src={sessionData.user.image || ""}
-                alt=""
-              />
+              {sessionData.user.image && (
+                <Image
+                  className="h-8 w-8 rounded-full"
+                  src={sessionData.user.image}
+                  alt="User image avatar"
+                  width={32}
+                  height={32}
+                />
+              )}
             </Menu.Button>
           </div>
         ) : (
