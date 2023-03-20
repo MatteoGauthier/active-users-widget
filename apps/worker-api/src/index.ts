@@ -41,7 +41,7 @@ app.get("/:projectId/stats", async (c) => {
 
   const result: StatisticsJson = {
     last30Minutes: lastViews.keys.filter((e) => e.metadata && !e.metadata.isTotalKey).length,
-    totalViews,
+    totalViews: totalViews || 0,
     averageViewsLocation: averageLocationFromKeys(lastViews.keys),
     views: lastViews.keys as Key[],
     topCountry: findTopCountryFromKeys(lastViews.keys),
