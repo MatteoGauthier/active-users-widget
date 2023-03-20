@@ -25,6 +25,8 @@ const server = z.object({
   GITHUB_CLIENT_SECRET: z.string(),
   UPSTASH_REDIS_REST_URL: z.string(),
   UPSTASH_REDIS_REST_TOKEN: z.string(),
+  STRIPE_SECRET_KEY: z.string(),
+  STRIPE_WEBHOOK_SECRET: z.string(),
 });
 
 /**
@@ -53,6 +55,8 @@ const processEnv = {
   UPSTASH_REDIS_REST_TOKEN: process.env.UPSTASH_REDIS_REST_TOKEN,
   PRISMA_DEBUG: process.env.PRISMA_DEBUG,
   NEXT_PUBLIC_SERVICE_API_URL: process.env.NEXT_PUBLIC_SERVICE_API_URL,
+  STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
+  STRIPE_WEBHOOK_SECRET: process.env.STRIPE_WEBHOOK_SECRET,
 };
 
 // Don't touch the part below
