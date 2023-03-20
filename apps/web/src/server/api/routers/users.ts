@@ -1,3 +1,6 @@
+import { Plan } from "@prisma/client";
+import { z } from "zod";
+import { maxProjectByPlan } from "../../../utils/common";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const userRouter = createTRPCRouter({
@@ -8,17 +11,37 @@ export const userRouter = createTRPCRouter({
       },
     });
 
-    const maxProjectByPlan = {
-      free: 3,
-      pro: 10,
-      entreprise: 100,
-      // @todo Add more plans
-    };
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+    });
 
     return {
       projectCount: projects,
-      maxProjects: maxProjectByPlan.free
-      // maxProjects: maxProjectByPlan[ctx.session.user.plan],
+      maxProjects: maxProjectByPlan[user?.plan ?? Plan.FREE],
+      user,
     };
   }),
+  subscriptionStatus: protectedProcedure
+    .output(
+      z.object({
+        status: z.nativeEnum(Plan),
+      })
+    )
+    .query(async ({ ctx }) => {
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          id: ctx.session.user.id,
+        },
+        select: {
+          stripeCustomerId: true,
+          plan: true,
+        },
+      });
+
+      return {
+        status: user?.plan ?? Plan.FREE,
+      };
+    }),
 });
