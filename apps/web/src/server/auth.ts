@@ -4,6 +4,7 @@ import { getServerSession, type NextAuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import { env } from "../env.mjs";
 import { prisma } from "./db";
+import { createNewCustomer } from "./stripe/utils";
 
 /**
  * Options for NextAuth.js used to configure adapters, providers, callbacks,
@@ -22,6 +23,29 @@ export const authOptions: NextAuthOptions = {
         // session.user.role = user.role; <-- put other properties on the session here
       }
       return session;
+    },
+  },
+  events: {
+    createUser: async ({ user }) => {
+      // @todo move this logic in a service or a helper
+
+      const customer = await createNewCustomer({
+        email: user.email!,
+        name: user.name!,
+      });
+      const userUpdated = await prisma.user.update({
+        where: {
+          id: user.id,
+        },
+        data: {
+          stripeCustomerId: customer.id,
+        },
+      });
+
+      // @todo add logger
+      console.log(
+        `Added stripeCustomerId to user ${userUpdated.id}, the value of stripeCustomerId is ${userUpdated.stripeCustomerId}`
+      );
     },
   },
   adapter: PrismaAdapter(prisma),
