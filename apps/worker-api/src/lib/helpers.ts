@@ -27,13 +27,13 @@ export const findTopCountryFromKeys = (
     }
   }[]
 ) => {
-  if (locations.length === 0) return null
+  if (locations.length === 0) return
   const countries = locations
     .filter((e) => e.metadata?.country)
     .map((e) => e?.metadata?.country)
     .filter((item): item is string => !!item)
 
-  if (countries.length === 0) return null
+  if (countries.length === 0) return
 
   const countryCount = countries.reduce((acc, cur) => {
     if (cur) {
@@ -43,6 +43,7 @@ export const findTopCountryFromKeys = (
   }, {} as Record<string, number>)
   const countriesKeys = Object.keys(countryCount)
   const topCountry = countriesKeys.reduce((a, b) => (countryCount[a] > countryCount[b] ? a : b))
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [countryName, countryCode, countryEmoji] = countriesDatabase.find((e) => e[1] === topCountry)!
 
   return {

@@ -144,6 +144,7 @@ importers:
   apps/worker-api:
     specifiers:
       '@cloudflare/workers-types': ^4.20230115.0
+      eslint-config-custom: workspace:*
       hono: ^2.7.6
       nanoid: ^4.0.1
       shared-types: workspace:*
@@ -155,6 +156,7 @@ importers:
       nanoid: 4.0.1
     devDependencies:
       '@cloudflare/workers-types': 4.20230307.0
+      eslint-config-custom: link:../../packages/eslint-config-custom
       shared-types: link:../../packages/shared-types
       typescript: 4.9.5
       vitest: 0.28.5
