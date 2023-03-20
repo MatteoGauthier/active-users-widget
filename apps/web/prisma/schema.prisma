@@ -31,6 +31,13 @@ enum Role {
     USER
 }
 
+enum Plan {
+    FREE
+    PRO
+    BUSINESS
+    ENTREPRISE
+}
+
 model User {
     id        String   @id @default(uuid())
     createdAt DateTime @default(now()) @map(name: "created_at")
@@ -42,6 +49,7 @@ model User {
     image            String?
     role             Role      @default(USER)
     stripeCustomerId String?   @unique
+    plan             Plan      @default(FREE)
 
     accounts Account[]
     sessions Session[]
