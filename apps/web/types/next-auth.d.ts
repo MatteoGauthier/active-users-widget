@@ -8,5 +8,6 @@ declare module "next-auth" {
   }
   interface User {
     role: Role;
+    stripeCustomerId?: string;
   }
 }
