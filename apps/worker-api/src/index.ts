@@ -22,6 +22,7 @@ app.get("/:projectId/capture", async (c) => {
   const viewKey = `${c.req.param().projectId}:${id}`
   const totalKey = `${c.req.param().projectId}:total`
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const geo = c.req.cf as any
 
   c.executionCtx.waitUntil(saveView({ context: c, viewKey, totalKey, geo }))
@@ -32,11 +33,11 @@ app.get("/:projectId/capture", async (c) => {
 })
 
 app.get("/:projectId/stats", async (c) => {
-  let lastViews = await c.env.VIEWS.list<Metadata>({
+  const lastViews = await c.env.VIEWS.list<Metadata>({
     prefix: `${c.req.param().projectId}:`,
   })
-  let totalViewsResult = await c.env.VIEWS.get(`${c.req.param().projectId}:total`, "text")
-  let totalViews = totalViewsResult ? parseInt(totalViewsResult) : null
+  const totalViewsResult = await c.env.VIEWS.get(`${c.req.param().projectId}:total`, "text")
+  const totalViews = totalViewsResult ? parseInt(totalViewsResult) : null
 
   const result: StatisticsJson = {
     last30Minutes: lastViews.keys.filter((e) => e.metadata && !e.metadata.isTotalKey).length,
@@ -49,7 +50,7 @@ app.get("/:projectId/stats", async (c) => {
 })
 
 app.get("/global", async (c) => {
-  let views = await c.env.VIEWS.list()
+  const views = await c.env.VIEWS.list()
   return c.json(views)
 })
 

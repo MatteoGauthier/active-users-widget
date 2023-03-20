@@ -23,7 +23,9 @@
         "^prisma:studio"
       ]
     },
-    "lint": {},
+    "lint": {
+      "cache": false
+    },
     "dev": {
       "cache": false,
       "persistent": true

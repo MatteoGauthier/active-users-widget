@@ -6,7 +6,8 @@
     "post-build": "tsx ./scripts/country-list.ts",
     "dev": "npm run post-build && wrangler dev --local",
     "deploy": "npm run post-build && wrangler publish",
-    "test": "npm run post-build && vitest"
+    "test": "npm run post-build && vitest",
+    "lint": "eslint --ext .js,.ts,.tsx . && tsc"
   },
   "dependencies": {
     "hono": "^2.7.6",
@@ -17,6 +18,7 @@
     "shared-types": "workspace:*",
     "typescript": "^4.9.5",
     "vitest": "^0.28.4",
-    "wrangler": "2.12.3"
+    "wrangler": "2.12.3",
+    "eslint-config-custom": "workspace:*"
   }
 }

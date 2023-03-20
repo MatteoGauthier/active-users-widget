@@ -5,11 +5,12 @@ type Args = {
   context: Context<"projectId", { Bindings: Env }, unknown>
   viewKey: string
   totalKey: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   geo: any
 }
 
 export async function saveView({ context: c, geo, viewKey, totalKey }: Args) {
-  let savedView = await c.env.VIEWS.put(viewKey, `v_${viewKey}`, {
+  await c.env.VIEWS.put(viewKey, `v_${viewKey}`, {
     metadata: {
       time: new Date().toISOString(),
       ip: c.req.headers.get("CF-Connecting-IP") || "unknown",
@@ -25,9 +26,9 @@ export async function saveView({ context: c, geo, viewKey, totalKey }: Args) {
     expirationTtl: 60 * 30,
   })
 
-  let currentTotalResult = await c.env.VIEWS.get(totalKey, "text")
-  let currentTotal = currentTotalResult ? parseInt(currentTotalResult) : 0
-  const savedNewTotal = await c.env.VIEWS.put(totalKey, `${currentTotal + 1}`, {
+  const currentTotalResult = await c.env.VIEWS.get(totalKey, "text")
+  const currentTotal = currentTotalResult ? parseInt(currentTotalResult) : 0
+  await c.env.VIEWS.put(totalKey, `${currentTotal + 1}`, {
     metadata: {
       isTotalKey: true,
     },
