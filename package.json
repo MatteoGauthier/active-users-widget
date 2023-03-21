@@ -10,7 +10,8 @@
     "lint": "turbo run lint",
     "changeset": "changeset",
     "version-packages": "changeset version",
-    "release": "turbo run build && changeset publish"
+    "release": "turbo run build && changeset publish",
+    "stripe-listen": "stripe listen --forward-to localhost:3000/api/stripe-webhook"
   },
   "devDependencies": {
     "@changesets/cli": "^2.26.0",
