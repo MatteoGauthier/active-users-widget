@@ -1,5 +1,6 @@
 import { Plan } from "@prisma/client";
 import { NextApiRequest } from "next";
+import { z } from "zod";
 import { env } from "../env.mjs";
 
 export const statNumberFormatter = Intl.NumberFormat("en", {
@@ -42,3 +43,5 @@ export const getBaseUrl = (req: NextApiRequest) => {
     ? `http://${req.headers.host ?? "localhost:3000"}`
     : `https://${req.headers.host ?? env.NEXTAUTH_URL}`;
 };
+
+export const planSchema = z.nativeEnum(Plan);

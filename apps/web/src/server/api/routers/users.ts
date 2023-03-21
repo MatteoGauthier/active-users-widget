@@ -1,6 +1,6 @@
 import { Plan } from "@prisma/client";
 import { z } from "zod";
-import { maxProjectByPlan } from "../../../utils/common";
+import { maxProjectByPlan, planSchema } from "../../../utils/common";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const userRouter = createTRPCRouter({
@@ -26,7 +26,7 @@ export const userRouter = createTRPCRouter({
   subscriptionStatus: protectedProcedure
     .output(
       z.object({
-        status: z.nativeEnum(Plan),
+        status: planSchema,
       })
     )
     .query(async ({ ctx }) => {

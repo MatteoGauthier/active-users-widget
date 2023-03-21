@@ -1,14 +1,13 @@
-import { Plan } from "@prisma/client";
 import Stripe from "stripe";
 import { z } from "zod";
-import { getBaseUrl } from "../../../utils/common";
+import { getBaseUrl, planSchema } from "../../../utils/common";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const stripeRouter = createTRPCRouter({
   createCheckoutSession: protectedProcedure
     .input(
       z.object({
-        plan: z.nativeEnum(Plan),
+        plan: planSchema,
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -42,7 +41,7 @@ export const stripeRouter = createTRPCRouter({
         subscription_data: {
           metadata: {
             userId: session.user?.id,
-            plan_id: input.plan,
+            // plan_id: input.plan,
           },
         },
       });
@@ -57,7 +56,7 @@ export const stripeRouter = createTRPCRouter({
     .input(
       z
         .object({
-          plan: z.nativeEnum(Plan),
+          plan: planSchema,
         })
         .optional()
     )
