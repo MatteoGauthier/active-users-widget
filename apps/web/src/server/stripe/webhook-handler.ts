@@ -1,11 +1,12 @@
 import { Plan, PrismaClient } from "@prisma/client";
 import type Stripe from "stripe";
 import { z } from "zod";
+import { planSchema } from "../../utils/common";
 import { stripe } from "./client";
 
 const subscriptionMetadataSchema = z.object({
   userId: z.string(),
-  plan_id: z.nativeEnum(Plan),
+  plan_id: planSchema,
 });
 
 export const handleSubscriptionCreated = async ({
