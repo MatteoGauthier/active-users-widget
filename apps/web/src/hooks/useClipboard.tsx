@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 
 export function useClipboard({ timeout = 2000 } = {}) {
   const [error, setError] = useState<Error | null>(null);
@@ -31,4 +32,17 @@ export function useClipboard({ timeout = 2000 } = {}) {
   };
 
   return { copy, reset, error, copied };
+}
+
+export function useCopyToClipboard() {
+  const clipboard = useClipboard();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const copy = (value: any) => {
+    if (!value) return;
+    clipboard.copy(value);
+    toast.success(`Successfully copied to clipboard!`);
+  };
+
+  return copy;
 }
