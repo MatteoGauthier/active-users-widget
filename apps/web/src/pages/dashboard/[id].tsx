@@ -8,10 +8,10 @@ import { prisma } from "../../server/db";
 import { Project } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { serialize } from "superjson";
-import GlobeViz from "../../components/dashboard/GlobeViz";
+import GlobeViz from "@/components/dashboard/GlobeViz";
 import { getStatistics } from "../../utils/queries";
-import DashboardLayout from "../../components/layout/DashboardLayout";
-import StatsBanner from "../../components/dashboard/detail/StatsBanner";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import StatsBanner from "@/components/dashboard/detail/StatsBanner";
 
 export const getStaticProps = async (
   context: GetStaticPropsContext<{ id: string }>

@@ -1,7 +1,7 @@
-import NewProjectCard from "../../components/dashboard/NewProjectCard";
-import ProjectCard from "../../components/dashboard/ProjectCard";
-import DashboardLayout from "../../components/layout/DashboardLayout";
-import { api } from "../../utils/api";
+import NewProjectCard from "@/components/dashboard/NewProjectCard";
+import ProjectCard from "@/components/dashboard/ProjectCard";
+import DashboardLayout from "@/components/layout/DashboardLayout";
+import { api } from "@/utils/api";
 
 export default function DashboardPage() {
   const dashboardProjects = api.project.getUserDashboardProjects.useQuery();
