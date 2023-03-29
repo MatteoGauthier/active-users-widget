@@ -3,8 +3,8 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useCallback } from "react";
-import RingProgress from "../../components/dashboard/RingProgress";
-import DashboardLayout from "../../components/layout/DashboardLayout";
+import RingProgress from "@/components/dashboard/RingProgress";
+import DashboardLayout from "@/components/layout/DashboardLayout";
 import { api } from "../../utils/api";
 import { getLowerPlan, getUpperPlan } from "../../utils/common";
 

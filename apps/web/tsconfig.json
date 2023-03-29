@@ -8,5 +8,11 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-  ]
+  ],
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
+  }
 }

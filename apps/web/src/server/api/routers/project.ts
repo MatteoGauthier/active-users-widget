@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
-import shiki from "shiki";
+import { getHighlightedWidgetSnippet } from "@/utils/code-snippets";
 
 export const projectRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -11,14 +11,7 @@ export const projectRouter = createTRPCRouter({
   }),
 
   getUserDashboardProjects: protectedProcedure.query(async ({ ctx }) => {
-    const highlighter = await shiki.getHighlighter({
-      theme: "github-light",
-      langs: ["html"],
-    });
-    const raw = `<script data-project-id="%PROJECT_ID%" src="https://unpkg.com/active-users-widget" defer async></script>`;
-    const highlighted = highlighter.codeToHtml(raw, {
-      lang: "html",
-    });
+    const { highlighted, raw } = await getHighlightedWidgetSnippet();
 
     return {
       projects: await ctx.prisma.project.findMany({

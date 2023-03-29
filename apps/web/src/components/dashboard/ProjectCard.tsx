@@ -1,8 +1,7 @@
 import { Project } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
-import { useClipboard } from "../../hooks/useClipboard";
+import { useCopyToClipboard } from "../../hooks/useClipboard";
 import { getStatistics } from "../../utils/queries";
 import CopyIcon from "../svgx/CopyIcon";
 
@@ -21,18 +20,13 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
     enabled: !!project.key,
   });
 
-  const clipboard = useClipboard();
+  const copy = useCopyToClipboard();
 
   const cleanedHighlightedCode =
     project.key &&
     codeSnippet?.highlighted?.replace("%PROJECT_ID%", project.key);
   const cleanedRawCode =
     project.key && codeSnippet?.raw?.replace("%PROJECT_ID%", project.key);
-
-  const copy = () => {
-    clipboard.copy(cleanedRawCode);
-    toast.success(`Successfully copied to clipboard!`);
-  };
 
   return (
     <article className="grid grid-cols-6 gap-4 rounded-md border border-slate-100 p-4">
@@ -94,7 +88,7 @@ export default function ProjectCard({ codeSnippet, project }: Props) {
                 dangerouslySetInnerHTML={{ __html: cleanedHighlightedCode }}
               ></div>
               <button
-                onClick={copy}
+                onClick={() => copy(cleanedRawCode)}
                 className="flex items-center space-x-1 rounded-lg bg-slate-800 px-2 py-1 text-white"
               >
                 <span>Copy</span>
