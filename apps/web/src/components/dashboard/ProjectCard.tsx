@@ -1,8 +1,7 @@
 import { Project } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { toast } from "react-hot-toast";
-import { useClipboard, useCopyToClipboard } from "../../hooks/useClipboard";
+import { useCopyToClipboard } from "../../hooks/useClipboard";
 import { getStatistics } from "../../utils/queries";
 import CopyIcon from "../svgx/CopyIcon";
 
