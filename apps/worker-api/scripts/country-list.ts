@@ -1,5 +1,5 @@
 import fs from "fs/promises"
-
+import fetch from "isomorphic-unfetch"
 const API_URL = "https://raw.githubusercontent.com/dr5hn/countries-states-cities-database/master/countries.json"
 
 interface Country {
