@@ -55,6 +55,7 @@ importers:
       radash: ^10.7.1
       react: 18.2.0
       react-dom: 18.2.0
+      react-hook-form: ^7.43.9
       react-hot-toast: ^2.4.0
       react-spring: ^9.7.1
       shared-types: workspace:*
@@ -88,6 +89,7 @@ importers:
       radash: 10.7.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-hook-form: 7.43.9_react@18.2.0
       react-hot-toast: 2.4.0_biqbaboplfbrettd7655fr4n2y
       react-spring: 9.7.1_biqbaboplfbrettd7655fr4n2y
       stripe: 11.15.0
@@ -6907,6 +6909,15 @@ packages:
       attr-accept: 2.2.2
       file-selector: 0.5.0
       prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
+  /react-hook-form/7.43.9_react@18.2.0:
+    resolution: {integrity: sha512-AUDN3Pz2NSeoxQ7Hs6OhQhDr6gtF9YRuutGDwPQqhSUAHJSgGl2VeY3qN19MG0SucpjgDiuMJ4iC5T5uB+eaNQ==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
       react: 18.2.0
     dev: false
 

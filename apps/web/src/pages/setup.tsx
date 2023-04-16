@@ -1,9 +1,44 @@
-import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { useSession } from "next-auth/react";
-import React from "react";
+import Image from "next/image";
+import React, { FormEvent, useCallback, useState } from "react";
+
+type Inputs = {
+  name: string;
+  email: string;
+  avatar: File;
+  followProductUpdates: boolean;
+  acceptPolicy: boolean;
+  project: {
+    name: string;
+    allowedOrigin: string;
+  };
+};
 
 export default function SetupPage() {
+  const [avatar, setAvatar] = useState<string>("");
   const { data: sessionData } = useSession();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+
+  const handleImageImport = useCallback(
+    (e: React.FormEvent<HTMLInputElement>) => {
+      const reader = new FileReader();
+      reader.addEventListener("load", (event) => {
+        setAvatar(event?.target?.result as string);
+      });
+      if (e.currentTarget && e.currentTarget.files && e.currentTarget.files[0])
+        reader.readAsDataURL(e.currentTarget.files[0]);
+    },
+    []
+  );
+
+  const avatarImg = avatar || sessionData?.user?.image || "/avatar.svg";
 
   return (
     <div>
@@ -17,7 +52,10 @@ export default function SetupPage() {
               Setup your project and start counting users on your website
             </p>
           </header>
-          <form className="not-prose mb-16 space-y-6">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="not-prose mb-16 space-y-6"
+          >
             <div className="rounded-md  border border-gray-900/10 px-6 py-4 pb-8">
               <div className="-mx-6 -my-4 rounded-t-md border-b border-gray-900/10 bg-slate-100/40 px-6 py-4">
                 <h2 className="text-base font-semibold leading-7 text-gray-900">
@@ -39,11 +77,12 @@ export default function SetupPage() {
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                       <input
                         type="text"
-                        name="name"
                         id="name"
                         autoComplete="given-name"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Tim Cook"
+                        defaultValue={sessionData?.user?.name || ""}
+                        {...register("name", { required: true })}
                       />
                     </div>
                   </div>
@@ -59,11 +98,12 @@ export default function SetupPage() {
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                       <input
                         type="text"
-                        name="email"
                         id="email"
                         autoComplete="email"
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="tim@apple.com"
+                        defaultValue={sessionData?.user?.email || ""}
+                        {...register("email", { required: true })}
                       />
                     </div>
                   </div>
@@ -77,16 +117,25 @@ export default function SetupPage() {
                     Photo
                   </label>
                   <div className="mt-2 flex items-center gap-x-3">
-                    <UserCircleIcon
-                      className="h-12 w-12 text-gray-300"
-                      aria-hidden="true"
+                    <Image
+                      src={avatarImg}
+                      className="h-12 w-12 rounded-full object-cover text-gray-300"
+                      alt="User avatar"
+                      width={48}
+                      height={48}
                     />
-                    <button
-                      type="button"
-                      className="rounded-md bg-white px-2.5 py-1.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                    >
-                      Change
-                    </button>
+
+                    <input
+                      className="block w-full text-sm text-slate-500
+                     file:mr-4 file:rounded-md file:border-0 file:bg-gray-50
+                     file:py-2 file:px-4 file:text-sm
+                     file:font-semibold file:text-gray-700
+                     hover:file:bg-gray-100"
+                      type="file"
+                      id="formFile"
+                      {...register("avatar")}
+                      onChange={handleImageImport}
+                    />
                   </div>
                 </div>
 
@@ -94,15 +143,15 @@ export default function SetupPage() {
                   <div className="relative flex gap-x-3">
                     <div className="flex h-6 items-center">
                       <input
-                        id="comments"
-                        name="comments"
+                        id="followProductUpdates"
                         type="checkbox"
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        {...register("followProductUpdates")}
                       />
                     </div>
                     <div className="text-sm leading-6">
                       <label
-                        htmlFor="comments"
+                        htmlFor="followProductUpdates"
                         className="font-medium text-gray-900"
                       >
                         Want to follow product updates ?
@@ -115,16 +164,15 @@ export default function SetupPage() {
                   <div className="relative flex gap-x-3">
                     <div className="flex h-6 items-center">
                       <input
-                        id="candidates"
-                        name="candidates"
+                        id="acceptPolicy"
                         type="checkbox"
-                        required
                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+                        {...register("acceptPolicy", { required: true })}
                       />
                     </div>
                     <div className="text-sm leading-6">
                       <label
-                        htmlFor="candidates"
+                        htmlFor="acceptPolicy"
                         className="font-medium text-gray-900"
                       >
                         Usage Policy (Required){" "}
@@ -166,12 +214,11 @@ export default function SetupPage() {
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                       <input
                         type="text"
-                        name="project.name"
                         id="project.name"
                         autoComplete=""
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="Tim Cook"
-                        defaultValue={sessionData?.user.name || ""}
+                        {...register("project.name", { required: true })}
                       />
                     </div>
                   </div>
@@ -192,11 +239,13 @@ export default function SetupPage() {
                     <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
                       <input
                         type="text"
-                        name="project.allowedOrigin"
                         id="project.allowedOrigin"
                         autoComplete=""
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
                         placeholder="example.com"
+                        {...register("project.allowedOrigin", {
+                          required: true,
+                        })}
                       />
                     </div>
                   </div>
