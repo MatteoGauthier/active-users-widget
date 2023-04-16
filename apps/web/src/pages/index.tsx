@@ -3,7 +3,6 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import Head from "next/head";
 import Link from "next/link";
 
-
 const Home: NextPage = () => {
   return (
     <>
@@ -69,12 +68,41 @@ const AuthShowcase: React.FC = () => {
         {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
         {/* {secretMessage && <span> - {secretMessage}</span>} */}
       </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
+      <div className="inline-block space-x-3">
+        {sessionData ? (
+          <>
+            <button
+              className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+              onClick={() => signOut()}
+            >
+              {"Sign out"}
+            </button>
+            <Link
+              href="/dashboard"
+              className="rounded-full bg-green-300/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-green-300/20"
+            >
+              {"Dashboard"}
+            </Link>
+          </>
+        ) : (
+          <>
+            <button
+              className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
+              onClick={() => void signIn()}
+            >
+              {"Sign in"}
+            </button>{" "}
+            <button
+              className="rounded-full bg-orange-400/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-orange-400/20"
+              onClick={() => void signIn(undefined, {
+                callbackUrl: '/setup'
+              })}
+            >
+              {"Sign up"}
+            </button>
+          </>
+        )}{" "}
+      </div>
     </div>
   );
 };
