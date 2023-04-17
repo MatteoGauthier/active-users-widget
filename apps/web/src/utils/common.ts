@@ -2,6 +2,7 @@ import { Plan } from "@prisma/client";
 import { NextApiRequest } from "next";
 import { z } from "zod";
 import { env } from "../env.mjs";
+import { nanoid } from "nanoid";
 
 export const statNumberFormatter = Intl.NumberFormat("en", {
   notation: "compact",
@@ -45,3 +46,5 @@ export const getBaseUrl = (req: NextApiRequest) => {
 };
 
 export const planSchema = z.nativeEnum(Plan);
+
+export const generateProjectKey = () => nanoid(10);
