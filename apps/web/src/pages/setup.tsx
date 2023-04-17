@@ -1,12 +1,14 @@
-import { useForm, SubmitHandler } from "react-hook-form";
+import { api } from "@/utils/api";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import React, { FormEvent, useCallback, useState } from "react";
+import { useRouter } from "next/router";
+import React, { useCallback, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 type Inputs = {
   name: string;
   email: string;
-  avatar: File;
+  avatar: File[];
   followProductUpdates: boolean;
   acceptPolicy: boolean;
   project: {
@@ -16,15 +18,53 @@ type Inputs = {
 };
 
 export default function SetupPage() {
+  const router = useRouter();
   const [avatar, setAvatar] = useState<string>("");
   const { data: sessionData } = useSession();
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const { register, handleSubmit } = useForm<Inputs>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { mutateAsync: fetchPresignedPostUrl } =
+    api.bucket.getPresignedPostUrl.useMutation();
+
+  const { mutateAsync: setupUser } = api.user.setup.useMutation();
+
+  const { data: isKnownUser } = api.user.knownUser.useQuery();
+
+  if (isKnownUser && sessionData?.user.role !== "ADMIN") {
+    router.replace("/dashboard");
+  }
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    if (data.avatar[0]) {
+      // @todo
+      // const preSignedPostUrl = await fetchPresignedPostUrl({
+      //   fileName: data.avatar[0].name,
+      //   fileType: data.avatar[0].type,
+      // });
+      // const formData = new FormData();
+      // formData.append("file", data.avatar[0]);
+      // @todo fix this (cors issue https://discord.com/channels/595317990191398933/940663374377783388/1097310908969136219)
+      // const upload = await fetch(preSignedPostUrl, {
+      //   method: "PUT",
+      //   body: formData,
+      //   headers: {
+      //     "Content-Type": data.avatar[0].type,
+      //   }
+      // });
+      // console.log("🚀 ~ file: setup.tsx:42 ~ upload:", upload);
+    }
+    await setupUser({
+      email: data.email,
+      name: data.name,
+      // @todo
+      // avatar
+      followProductUpdates: data.followProductUpdates,
+      project: {
+        name: data.project.name,
+        allowedOrigin: data.project.allowedOrigin,
+      },
+    });
+  };
 
   const handleImageImport = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
@@ -242,7 +282,7 @@ export default function SetupPage() {
                         id="project.allowedOrigin"
                         autoComplete=""
                         className="block flex-1 border-0 bg-transparent py-1.5 pl-3 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-                        placeholder="example.com"
+                        placeholder="example.com, localhost:3000, *"
                         {...register("project.allowedOrigin", {
                           required: true,
                         })}
