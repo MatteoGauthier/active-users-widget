@@ -13,6 +13,8 @@
     "prisma:studio": "BROWSER=none npm run prisma studio"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.312.0",
+    "@aws-sdk/s3-request-presigner": "^3.312.0",
     "@headlessui/react": "^1.7.13",
     "@heroicons/react": "^2.0.16",
     "@next-auth/prisma-adapter": "^1.0.5",
