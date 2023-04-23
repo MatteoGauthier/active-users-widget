@@ -82,7 +82,7 @@ export default function MyAccountPage() {
                   width="64"
                   height="64"
                   alt="user avatar"
-                  className="rounded-full"
+                  className="rounded-full h-16 w-16 object-cover"
                 />
                 <div className="text-md flex flex-col text-slate-800">
                   <span>
