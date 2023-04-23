@@ -4,6 +4,7 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
 import { getHighlightedWidgetSnippet } from "@/utils/code-snippets";
+import { generateProjectKey } from "@/utils/common";
 
 export const projectRouter = createTRPCRouter({
   getAll: publicProcedure.query(({ ctx }) => {
@@ -57,7 +58,7 @@ export const projectRouter = createTRPCRouter({
       const project = await ctx.prisma.project.create({
         data: {
           name: input.name,
-          key: nanoid(10),
+          key: generateProjectKey(),
           owner: {
             connect: {
               id: ctx.session.user.id,
