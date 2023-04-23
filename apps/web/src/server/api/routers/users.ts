@@ -49,7 +49,7 @@ export const userRouter = createTRPCRouter({
         followProductUpdates: z.boolean().optional(),
         project: z.object({
           name: z.string(),
-          allowedOrigin: z.string(),
+          // allowedOrigin: z.string(),
         }),
       })
     )
@@ -68,7 +68,7 @@ export const userRouter = createTRPCRouter({
       await ctx.prisma.project.create({
         data: {
           name: input.project.name,
-          allowedOrigins: [input.project.allowedOrigin],
+          // allowedOrigins: [input.project.allowedOrigin],
           key: generateProjectKey(),
           owner: {
             connect: {

@@ -6,21 +6,30 @@ import { nanoid } from "nanoid";
 const client = new S3Client({
   endpoint: env.S3_ENDPOINT,
   region: "auto",
+  credentials: {
+    accessKeyId: env.S3_ACCESS_KEY_ID,
+    secretAccessKey: env.S3_SECRET_ACCESS_KEY,
+  },
 });
 
 export async function getPresignedPostUrl(key: string) {
   const objectKey = `avatars/${nanoid()}-${key}`;
 
-  const url = await getSignedUrl(
+  // @todo Compress avatars images
+  // @todo Restrict access to active users widget domains
+  const signedUploadUrl = await getSignedUrl(
     client,
     new PutObjectCommand({
       Bucket: env.S3_BUCKET_NAME,
       Key: objectKey,
       ACL: "public-read",
-      ContentType: "image/jpg",
+      // @todo restrict to image types
+      // ContentType: "image/jpg",
     }),
     { expiresIn: 3600 }
   );
 
-  return url;
+  const publicObjectUrl = `${env.NEXT_PUBLIC_S3_PUBLIC_URL}/${env.S3_BUCKET_NAME}/${objectKey}`;
+
+  return { signedUploadUrl, publicObjectUrl };
 }

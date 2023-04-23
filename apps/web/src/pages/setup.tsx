@@ -1,4 +1,5 @@
 import { api } from "@/utils/api";
+import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
@@ -21,10 +22,13 @@ export default function SetupPage() {
   const router = useRouter();
   const [avatar, setAvatar] = useState<string>("");
   const { data: sessionData } = useSession();
-  const { register, handleSubmit } = useForm<Inputs>();
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { mutateAsync: fetchPresignedPostUrl } =
-    api.bucket.getPresignedPostUrl.useMutation();
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<Inputs>();
+  const { mutateAsync: fetchPresignedUpload } =
+    api.bucket.getPresignedUpload.useMutation();
 
   const { mutateAsync: setupUser } = api.user.setup.useMutation();
 
@@ -35,34 +39,40 @@ export default function SetupPage() {
   }
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    let avatar;
     if (data.avatar[0]) {
       // @todo
-      // const preSignedPostUrl = await fetchPresignedPostUrl({
-      //   fileName: data.avatar[0].name,
-      //   fileType: data.avatar[0].type,
-      // });
-      // const formData = new FormData();
-      // formData.append("file", data.avatar[0]);
-      // @todo fix this (cors issue https://discord.com/channels/595317990191398933/940663374377783388/1097310908969136219)
-      // const upload = await fetch(preSignedPostUrl, {
-      //   method: "PUT",
-      //   body: formData,
-      //   headers: {
-      //     "Content-Type": data.avatar[0].type,
-      //   }
-      // });
-      // console.log("🚀 ~ file: setup.tsx:42 ~ upload:", upload);
+      const presignedUpload = await fetchPresignedUpload({
+        fileName: data.avatar[0].name,
+        fileType: data.avatar[0].type,
+      });
+      const formData = new FormData();
+      formData.append("file", data.avatar[0]);
+      const upload = await fetch(presignedUpload.signedUploadUrl, {
+        method: "PUT",
+        body: data.avatar[0],
+        headers: {
+          "Content-Type": data.avatar[0].type,
+        },
+      });
+      if (upload.ok) {
+        avatar = presignedUpload.publicObjectUrl;
+      }
     }
     await setupUser({
       email: data.email,
       name: data.name,
-      // @todo
-      // avatar
+      avatar: avatar,
       followProductUpdates: data.followProductUpdates,
       project: {
         name: data.project.name,
-        allowedOrigin: data.project.allowedOrigin,
+        // @todo Include allowed origin to the RPC payload when the feature is available
+        // allowedOrigin: data.project.allowedOrigin,
       },
+    });
+    router.replace({
+      pathname: "/dashboard",
+      query: { setup: true },
     });
   };
 
@@ -263,7 +273,7 @@ export default function SetupPage() {
                     </div>
                   </div>
                 </div>
-                <div className="col-span-3">
+                {/* <div className="col-span-3">
                   <label
                     htmlFor="project.allowedOrigin"
                     className="inline-flex flex-col "
@@ -289,13 +299,17 @@ export default function SetupPage() {
                       />
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="flex items-center justify-end gap-x-6">
+              {/* @todo Add loading state */}
               <button
                 type="submit"
-                className="rounded-md bg-indigo-600 px-6 py-2 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className={clsx(
+                  "rounded-md bg-indigo-600 px-6 py-2 text-lg font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600",
+                  isSubmitting && "opacity-50"
+                )}
               >
                 Let&apos;s start 🚀
               </button>

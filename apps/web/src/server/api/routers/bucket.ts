@@ -3,7 +3,7 @@ import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../trpc";
 
 export const bucketRouter = createTRPCRouter({
-  getPresignedPostUrl: protectedProcedure
+  getPresignedUpload: protectedProcedure
     .input(
       z.object({
         fileName: z.string(),
@@ -11,7 +11,7 @@ export const bucketRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
-      const url = await getPresignedPostUrl(input.fileName);
-      return url;
+      const result = await getPresignedPostUrl(input.fileName);
+      return result;
     }),
 });
