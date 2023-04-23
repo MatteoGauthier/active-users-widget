@@ -94,14 +94,22 @@ const AuthShowcase: React.FC = () => {
             </button>{" "}
             <button
               className="rounded-full bg-orange-400/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-orange-400/20"
-              onClick={() => void signIn(undefined, {
-                callbackUrl: '/setup'
-              })}
+              onClick={() =>
+                void signIn(undefined, {
+                  callbackUrl: "/setup",
+                })
+              }
             >
               {"Sign up"}
             </button>
           </>
         )}{" "}
+        <Link
+          href="/dashboard?setup=true"
+          className="rounded-full bg-green-300/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-green-300/20"
+        >
+          {"Dashboard Setup Success (test)"}
+        </Link>
       </div>
     </div>
   );
