@@ -27,6 +27,7 @@
     "@trpc/react-query": "^10.9.0",
     "@trpc/server": "^10.9.0",
     "@upstash/redis": "^1.20.0",
+    "canvas-confetti": "^1.6.0",
     "clsx": "^1.2.1",
     "cobe": "^0.6.3",
     "leva": "^0.9.34",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.3",
     "@tailwindcss/typography": "^0.5.9",
+    "@types/canvas-confetti": "^1.6.0",
     "@types/node": "^18.11.18",
     "@types/prettier": "^2.7.2",
     "@types/react": "^18.0.26",
