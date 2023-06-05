@@ -1,4 +1,4 @@
-import shiki from "shiki";
+import * as shiki from "shiki";
 
 export const getHighlightedWidgetSnippet = async (id?: string) => {
   const highlighter = await shiki.getHighlighter({
