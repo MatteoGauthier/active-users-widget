@@ -10,7 +10,8 @@
     "start": "next start",
     "prisma": "cross-env NODE_ENV=${NODE_ENV:-development} dotenv-flow -- prisma",
     "prisma:generate": "npm run prisma generate",
-    "prisma:studio": "BROWSER=none npm run prisma studio"
+    "prisma:studio": "BROWSER=none npm run prisma studio",
+    "vercel-build": "prisma generate && prisma migrate deploy && next build"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.312.0",
