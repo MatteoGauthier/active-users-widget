@@ -15,6 +15,8 @@ import StatsBanner from "@/components/dashboard/detail/StatsBanner";
 import { useCopyToClipboard } from "@/hooks/useClipboard";
 import CopyIcon from "@/components/svgx/CopyIcon";
 import { getHighlightedWidgetSnippet } from "@/utils/code-snippets";
+import Link from "next/link";
+import GlobeIcon from "@/components/svgx/GlobeIcon";
 
 export const getStaticProps = async (
   context: GetStaticPropsContext<{ id: string }>
@@ -94,6 +96,16 @@ export default function PostViewPage(
               Created {new Date(project.createdAt).toLocaleDateString("fr-FR")}
             </em>
           </div>
+          <div className="flex items-center space-x-2">
+            <Link
+              className="flex items-center space-x-2 rounded bg-emerald-500 px-4 py-2 text-white"
+              target="_blank"
+              href={`/demo/${project.key}`}
+            >
+              <GlobeIcon />
+              <span>Open demo page</span>
+            </Link>
+          </div>
         </div>
         <StatsBanner projectKey={project.key} />
         {statsData && (
@@ -108,7 +120,7 @@ export default function PostViewPage(
               Integrate the widget
             </h3>
             <p>
-              Add the following code to the <code>&lt;head&gt;</code> tag
+              Add the following code to the end of <code>&lt;body&gt;</code> tag
             </p>
             <div className="mt-2 flex space-x-2">
               <div
